@@ -1,4 +1,4 @@
-<%= form_with(model: rsvp) do |form| %>
+<%= form_with(model: [@event, rsvp], local: true) do |form| %>
   <% if rsvp.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(rsvp.errors.count, "error") %> prohibited this rsvp from being saved:</h2>
