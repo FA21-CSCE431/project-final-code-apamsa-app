@@ -1,0 +1,42 @@
+<%= form_with(model: rsvp) do |form| %>
+  <% if rsvp.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(rsvp.errors.count, "error") %> prohibited this rsvp from being saved:</h2>
+
+      <ul>
+        <% rsvp.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :event_name %>
+    <%= form.text_field :event_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :event_date %>
+    <%= form.date_select :event_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :f_name %>
+    <%= form.text_field :f_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :l_name %>
+    <%= form.text_field :l_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :uin %>
+    <%= form.text_field :uin %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
