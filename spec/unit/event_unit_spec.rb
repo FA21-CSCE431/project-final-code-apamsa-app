@@ -6,7 +6,7 @@ RSpec.describe Event, type: :model do
     described_class.new(event_name: 'First Meeting',
     event_date: Date.new(2000, 1, 2),
     description: 'This is the first meeting to introduce everyone',
-    event_start_time: '1220pm',
+    event_start_time: '12:20pm',
     event_end_time: '12:40 pm')
   end
 
