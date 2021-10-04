@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DeviseCreateAdmins < ActiveRecord::Migration[5.2]
+class DeviseCreateAdmins < ActiveRecord::Migration[6.1]
   def change
     create_table :admins do |t|
       t.string :email, null: false
