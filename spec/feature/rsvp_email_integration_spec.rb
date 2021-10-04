@@ -20,7 +20,7 @@ RSpec.describe 'Creating an Event', type: :feature do
 		fill_in 'Email', with: "test@gmail.com"
 		click_on 'Create Rsvp'
 
-		# Testing first name from RSVP
-		expect(page).to have_content('Joe')
+		# Testing email from RSVP
+		expect(page).to have_content('test@gmail.com')
 	end
 end
