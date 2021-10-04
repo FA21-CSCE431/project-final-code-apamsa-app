@@ -18,10 +18,8 @@
     <% @rsvps.each do |rsvp| %>
       <tr>
         <td><%= rsvp.event_name %></td>
-        <td><%= rsvp.event_date %></td>
         <td><%= rsvp.f_name %></td>
         <td><%= rsvp.l_name %></td>
-        <td><%= rsvp.uin %></td>
         <td><%= link_to 'Show', rsvp %></td>
         <td><%= link_to 'Edit', edit_rsvp_path(rsvp) %></td>
         <td><%= link_to 'Destroy', rsvp, method: :delete, data: { confirm: 'Are you sure?' } %></td>
