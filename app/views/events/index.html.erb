@@ -23,8 +23,8 @@
         <td><%= link_to 'Show', event %></td>
         <td><%= link_to 'Edit', edit_event_path(event) %></td>
         <td><%= link_to 'Delete', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= link_to 'RSVP to event', new_event_rsvp_path(event) %></td>
-        <td><%= link_to 'Admin: Show rsvp info', event_rsvps_path(event) %>
+		<td><%= link_to 'RSVP', new_event_rsvp_path(event) %></td>
+		<td><%= link_to 'view RSVPs', event_rsvps_path(event) %></td>
       </tr>
     <% end %>
   </tbody>

@@ -1,10 +1,10 @@
-<%= form_with(model: [@event, rsvp], local: true) do |form| %>
-  <% if rsvp.errors.any? %>
+<%= form_with(model: user) do |form| %>
+  <% if user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(rsvp.errors.count, "error") %> prohibited this rsvp from being saved:</h2>
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
-        <% rsvp.errors.each do |error| %>
+        <% user.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -12,18 +12,23 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :f_name, "First Name" %>
+    <%= form.label :f_name %>
     <%= form.text_field :f_name %>
   </div>
 
   <div class="field">
-    <%= form.label :l_name, "Last Name" %>
+    <%= form.label :l_name %>
     <%= form.text_field :l_name %>
   </div>
 
   <div class="field">
     <%= form.label :email %>
     <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :isAdmin %>
+    <%= form.check_box :isAdmin %>
   </div>
 
   <div class="actions">

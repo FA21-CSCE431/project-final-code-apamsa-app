@@ -2,28 +2,22 @@
 
 <p>
   <strong>Event name:</strong>
-  <%= @rsvp.event_name %>
+  <%= @event.event_name %>
 </p>
 
 <p>
   <strong>Event date:</strong>
-  <%= @rsvp.event_date %>
+  <%= @event.event_date %>
 </p>
 
 <p>
-  <strong>F name:</strong>
-  <%= @rsvp.f_name %>
+  <strong>Description:</strong>
+  <%= @event.description %>
 </p>
 
 <p>
-  <strong>L name:</strong>
-  <%= @rsvp.l_name %>
+  <strong>Time:</strong>
+  <%= @event.event_start_time %> - <%= @event.event_end_time %>
 </p>
 
-<p>
-  <strong>Uin:</strong>
-  <%= @rsvp.uin %>
-</p>
-
-<%= link_to 'Edit', edit_rsvp_path(@rsvp) %> |
-<%= link_to 'Back', rsvps_path %>
+<%= link_to 'Back', event_rsvps_path(@event) %>

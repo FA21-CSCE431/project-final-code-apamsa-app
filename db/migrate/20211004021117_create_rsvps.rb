@@ -5,7 +5,8 @@ class CreateRsvps < ActiveRecord::Migration[6.1]
       t.date :event_date
       t.string :f_name
       t.string :l_name
-      t.string :uin
+      t.string :email
+      t.references :event, null: false, foreign_key: true
 
       t.timestamps
     end

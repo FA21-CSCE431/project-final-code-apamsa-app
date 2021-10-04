@@ -2,5 +2,5 @@
 
 <%= render 'form', rsvp: @rsvp %>
 
-<%= link_to 'Show', @rsvp %> |
-<%= link_to 'Back', rsvps_path %>
+<%= link_to 'Show', [@event, @rsvp] %> |
+<%= link_to 'Back', event_rsvps_path(@event) %>
