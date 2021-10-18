@@ -2,11 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import LoginPage from "./components/loginPage";
-import HomePage from "./components/homePage";
-import BlogPage from "./components/blogPage";
-import EventsPage from "./components/eventsPage";
-import AboutPage from "./components/aboutPage";
-import ProfilePage from "./components/profilePage";
+import Page from "./components/page";
 
 import store from "./app/store";
 import { Provider } from "react-redux";
@@ -19,19 +15,7 @@ ReactDOM.render(
     <Router>
       <Switch>
         <Route path="/home">
-          <HomePage />
-        </Route>
-        <Route path="/blog">
-          <BlogPage />
-        </Route>
-        <Route path="/events">
-          <EventsPage />
-        </Route>
-        <Route path="/about">
-          <AboutPage />
-        </Route>
-        <Route path="/profile">
-          <ProfilePage />
+          <Page />
         </Route>
         <Route path="/">
           <LoginPage />

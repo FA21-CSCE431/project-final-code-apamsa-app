@@ -1,4 +1,4 @@
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { login } from "../objects/user/userSlice";
@@ -20,9 +20,15 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="App">
-      <div>
-        <br />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
+      <Stack spacing={2}>
         <TextField
           required
           id="outlined"
@@ -45,7 +51,7 @@ const LoginPage = () => {
         >
           Login
         </Button>
-      </div>
+      </Stack>
     </div>
   );
 };
