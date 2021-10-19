@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { login } from "../objects/user/userSlice";
 import { Link } from "react-router-dom";
+import getEvents from "../actions/getEvents";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const LoginPage = () => {
         admin: false,
       })
     );
+    getEvents();
   };
 
   return (
