@@ -1,61 +1,58 @@
 class Api::V1::EventsController < ApplicationController
-  before_action :set_event, only: %i[ show edit update destroy ]
+  # before_action :set_event, only: %i[ show edit update destroy ]
 
-  # GET /events or /events.json
+  protect_from_forgery with: :null_session
+
   def index
-    @events = Event.all
-    render json: @events
+    events = Event.all
+
+    render json: EventSerializer.new(events).serialized_json
   end
 
-  # GET /events/1 or /events/1.json
   def show
-    if @event
-      render json: @event
-    else
-      render json: @event.errors
+    event = Event.find_by(slug: params[:slug])
+
+    render json: EventSerializer.new(event, options).serialized_json
   end
 
-  # GET /events/new
-  def new
-    @event = Event.new
-  end
-
-  # GET /events/1/edit
-  def edit
-  end
-
-  # POST /events or /events.json
   def create
-    @event = Event.new(event_params)
+    event = Event.new(event_params)
 
-    if @event.save
-      render json: @event
+    if event.save
+      render json: EventSerializer.new(event).serialized_json 
     else
-      render json: @event.errors
+      render json: { error: event.errors.messages }, status: 422
     end
   end
 
-  # PATCH/PUT /beers/1
-  # PATCH/PUT /beers/1.json
   def update
+    event = Event.find_by(slug: params[:slug])
+
+    if event.update(event_params)
+      render json: EventSerializer.new(event, options).serialized_json
+    else
+      render json: { error: event.errors.messages }, status: 422
+    end
   end
 
-  # DELETE /beers/1
-  # DELETE /beers/1.json
   def destroy
-    @event.destroy
+    event = Event.find_by(slug: params[:slug])
 
-    render json: { notice: 'Event was successfully removed.' }
+    if event.destroy
+      head :no_content
+    else
+      render json: { error: event.errors.messages }, status: 422
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def event_params
-      params.require(:event).permit(:event_name, :event_date, :description, :event_start_time, :event_end_time)
-    end
+  def event_params
+    params.require(:event).permit(:event_name, :event_date, :description, :event_start_time, :event_end_time, :img_url)
+  end
+
+  def options
+    @options ||= { include: %i[rsvps] }
+  end
+
 end
