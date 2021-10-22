@@ -1,9 +1,17 @@
 Rails.application.routes.draw do
-  resources :users
-  resources :events do
-    resources :rsvps 
+
+  root "pages#index"
+
+  namespace :api do
+    namespace :v1 do
+      resources :users
+      resources :events, param: :slug
+      resources :rsvps, only: [:create, :destroy, :update]
+    end
   end
 
-  root "users#new"
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # Route requests that arent for existing paths back to our index path
+  # this is to handle react router w/o interfering with our actual rails routes
+  get '*path', to: 'pages#index', via: :all
+
 end
