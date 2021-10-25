@@ -27,12 +27,12 @@ const LinkWrapper = styled.div`
   height:50px;
   a {
     color: #fff;
-    background-color: #71b406;
+    background-color: #191d74;
     border-radius: 4px;
     padding: 10px 50px;
     cursor: pointer;
     border-radius: 3px;
-    border: 1px solid #71b406;
+    border: 1px solid #191d74;
     text-align: center;
     line-height: 20px;
     min-height: 60px;
@@ -42,8 +42,8 @@ const LinkWrapper = styled.div`
     width: 100%;
     transition: ease-in-out 0.1s;
     &:hover{
-      border-color: #619a07;
-      background: #619a07;
+      border-color: #6c72ff;
+      background: #6c72ff;
     }
   }
 `
@@ -68,7 +68,7 @@ const Event = ({ event_name,
         {event_date}
       </EventDate>
       <LinkWrapper>
-        <Link to={"/events/" + slug}>View Event</Link>
+        <Link to={"/rsvps"}>Rsvp</Link>
       </LinkWrapper>
     </Card>
   )

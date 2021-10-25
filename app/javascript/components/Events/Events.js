@@ -18,6 +18,14 @@ const Grid = styled.div`
   }
 `
 
+const MainGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  justify-items: center;
+  align-content: center;
+`
+
 const Events = () => {
   const [events, setEvents] = useState([]);
 
@@ -57,7 +65,9 @@ const Events = () => {
   return (
     <div>
       <h1>Events Page</h1>
-      <Grid>{grid}</Grid>
+      <MainGrid>
+        <Grid>{grid}</Grid>
+      </MainGrid>
     </div>
   )
 }
