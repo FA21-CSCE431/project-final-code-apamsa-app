@@ -1,42 +1,47 @@
-class Api::V1::RsvpsController < ApplicationController
-  # before_action :set_rsvp, only: %i[ show edit update destroy ]
+# frozen_string_literal: true
 
-  protect_from_forgery with: :null_session
-  
-  def create
-    rsvp = Rsvp.new(rsvp_params)
+module Api
+  module V1
+    class RsvpsController < ApplicationController
+      # before_action :set_rsvp, only: %i[ show edit update destroy ]
 
-    if rsvp.save
-      render json: RsvpSerializer.new(rsvp).serialized_json 
-    else
-      render json: { error: rsvp.errors.messages }, status: 422
+      protect_from_forgery with: :null_session
+
+      def create
+        rsvp = Rsvp.new(rsvp_params)
+
+        if rsvp.save
+          render json: RsvpSerializer.new(rsvp).serialized_json
+        else
+          render json: { error: rsvp.errors.messages }, status: 422
+        end
+      end
+
+      def update
+        rsvp = Rsvp.find(params[:id])
+
+        if rsvp.update(rsvp_params)
+          render json: RsvpSerializer.new(rsvp).serialized_json
+        else
+          render json: { error: rsvp.errors.messages }, status: 422
+        end
+      end
+
+      def destroy
+        rsvp = Rsvp.find(params[:id])
+
+        if rsvp.destroy
+          head :no_content
+        else
+          render json: { error: rsvp.errors.messages }, status: 422
+        end
+      end
+
+      private
+
+      def rsvp_params
+        params.require(:rsvp).permit(:event_name, :event_date, :f_name, :l_name, :email, :event_id)
+      end
     end
   end
-
-  def update
-    rsvp = Rsvp.find(params[:id])
-
-    if rsvp.update(rsvp_params)
-      render json: RsvpSerializer.new(rsvp).serialized_json
-    else
-      render json: { error: rsvp.errors.messages }, status: 422
-    end
-  end
-
-  def destroy
-    rsvp = Rsvp.find(params[:id])
-
-    if rsvp.destroy
-      head :no_content
-    else
-      render json: { error: rsvp.errors.messages }, status: 422
-    end
-  end
-
-  private
-
-  def rsvp_params
-    params.require(:rsvp).permit(:event_name, :event_date, :f_name, :l_name, :email, :event_id)
-  end
-
 end
