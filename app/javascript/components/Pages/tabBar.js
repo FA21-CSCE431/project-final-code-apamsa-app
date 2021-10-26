@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Tabs, Tab } from "@mui/material";
-import { Link } from "react-router-dom";
-import { Fragment } from "react";
-import Calendar from "react-calendar";
+import { Tabs, Tab } from "@mui/material"
+import { Link } from "react-router-dom"
+import { Fragment } from "react"
+import Calendar from "react-calendar"
 import styled from 'styled-components'
 
 
@@ -12,10 +12,6 @@ const MainGrid = styled.div`
   grid-gap: 20px;
   justify-items: center;
   align-content: center;
-`
-
-const Header = styled.div`
-  color: #191d74;
 `
 
 const TabBar = (props) => {
