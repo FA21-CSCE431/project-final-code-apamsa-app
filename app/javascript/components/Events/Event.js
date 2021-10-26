@@ -68,7 +68,7 @@ const Event = ({ event_name,
         {event_date}
       </EventDate>
       <LinkWrapper>
-        <Link to={"/rsvps"}>Rsvp</Link>
+        <Link to={"/events/" + slug}>Rsvp</Link>
       </LinkWrapper>
     </Card>
   )

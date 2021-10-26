@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Event from './Event'
 import axios from 'axios'
 import styled from 'styled-components'
+import Button from '@mui/material/Button'
+import { Link } from 'react-router-dom'
+import HomePage from '../Pages/homePage'
+
 
 const Grid = styled.div`
   display: grid;
@@ -16,14 +20,6 @@ const Grid = styled.div`
     border-radius: 5px;
     padding: 20px;
   }
-`
-
-const MainGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
-  justify-items: center;
-  align-content: center;
 `
 
 const Events = () => {
@@ -62,12 +58,15 @@ const Events = () => {
   //   return (<li key={item.attributes.event_name}>{item.attributes.event_name}</li>)
   // })
 
+  const link_to = () => {
+    return <Link to={"/home/"}/>
+  }
+
   return (
     <div>
       <h1>Events Page</h1>
-      <MainGrid>
-        <Grid>{grid}</Grid>
-      </MainGrid>
+      <Button variant="contained" href="/home">+ Add Event</Button>
+      <Grid>{grid}</Grid>
     </div>
   )
 }

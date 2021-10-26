@@ -4,17 +4,9 @@ import styled from 'styled-components'
 import Event from '../Events/Event'
 import axios from "axios";
 import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { DataGrid } from '@mui/x-data-grid'
 
 
-const Grid = styled.div `
-display: inline-grid;
-grid-template-columns: repeat(3, 1fr);
-grid-gap: 20px;
-justify-items: center;
-align-content: center;
-border: 1px solid #efefef;
-background: #fff;
-`
 
 const HomePage = () => {
 
@@ -26,8 +18,29 @@ const HomePage = () => {
     .catch( resp => console.log(resp))
   }, [events.length])
 
-  const list = events.map( item => {
-    return (<dt key={item.attributes.event_name}><Link to={"/events/"}>{item.attributes.event_name}{item.attributes.event_date}</Link></dt>)
+  // const list = events.map( item => {
+  //   return (<dt key={item.attributes.event_name}><Link to={"/events/"}>{item.attributes.event_name}{item.attributes.event_date}</Link></dt>)
+  // })
+
+  const columns = [
+    {
+      field: 'event_name',
+      header: 'Upcoming Events',
+      width: 200
+    },
+    {
+      field: 'event_date',
+      header: ' ',
+      width: 200
+    }
+  ];
+
+  const rows = events.map( item => {
+    return (
+      {
+        id: item.id, event_name: item.attributes.event_name, event_date: item.attributes.event_date
+      }
+    )
   })
 
   return (
@@ -36,12 +49,11 @@ const HomePage = () => {
         <TabBar tabValue={0} />
       </header>
       <br/>
-      <Grid>
-        <dl>
-          <dt><h2>Upcoming Events</h2></dt>
-          {list}
-        </dl>
-      </Grid>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        disableColumnReorder
+      />
     </div>
   );
 };

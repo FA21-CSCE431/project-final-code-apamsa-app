@@ -29,9 +29,6 @@ const TabBar = (props) => {
           <Tab value={4} component={Link} to="/profile" label="My Profile" />
         </Tabs>
         <br/>
-        <MainGrid>
-          <Calendar onChange={onChange} value={d_val} />
-        </MainGrid>
     </Fragment>
   );
 };
