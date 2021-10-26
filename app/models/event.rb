@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Event < ApplicationRecord
-	has_many :rsvps, dependent: :destroy
-  
+  has_many :rsvps, dependent: :destroy
+
   before_create :slugify
   # set slug file
   def slugify
