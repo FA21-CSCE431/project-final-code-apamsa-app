@@ -21,7 +21,6 @@ const TabBar = (props) => {
 
   return (
     <Fragment>
-      <Header>
         <Tabs value={tabValue}>
           <Tab value={0} component={Link} to="/home" label="Home" />
           <Tab value={1} component={Link} to="/blog" label="Blog" />
@@ -33,7 +32,6 @@ const TabBar = (props) => {
         {/* <MainGrid>
           <Calendar onChange={onChange} value={d_val} />
         </MainGrid> */}
-      </Header>
     </Fragment>
   );
 };
