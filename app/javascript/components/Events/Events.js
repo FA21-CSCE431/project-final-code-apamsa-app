@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Event from './Event'
 import axios from 'axios'
 import styled from 'styled-components'
+import Button from '@mui/material/Button'
+import { Link } from 'react-router-dom'
+import HomePage from '../Pages/homePage'
+
 
 const Grid = styled.div`
   display: grid;
@@ -54,9 +58,14 @@ const Events = () => {
   //   return (<li key={item.attributes.event_name}>{item.attributes.event_name}</li>)
   // })
 
+  const link_to = () => {
+    return <Link to={"/home/"}/>
+  }
+
   return (
     <div>
       <h1>Events Page</h1>
+      <Button variant="contained" href="/home">+ Add Event</Button>
       <Grid>{grid}</Grid>
     </div>
   )

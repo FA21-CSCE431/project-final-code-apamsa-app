@@ -1,18 +1,42 @@
-import React from "react"
-import { Route, Switch } from 'react-router-dom'
-import Events from "./Events/Events"
-import Event from "./Event/Event"
-import Page from "./Tabs/page"
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-const App = () => 
-{
+import HomePage from "./Pages/homePage";
+import BlogPage from "./Pages/blogPage";
+import EventsPage from "./Pages/eventsPage";
+import AboutPage from "./Pages/aboutPage";
+import ProfilePage from "./Pages/profilePage";
+import Footer from "./Pages/footer";
+
+
+const App = () => {
   return (
-    <Switch>
-      {/* <Route exact path="/" component={Events}/> */}
-      <Route exact path="/events/:slug" component={Event}/>
-      <Route exact path="/home" component={Page}/>
-    </Switch>
-  )
-}
+    <div>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomePage}/>
+          <Route path="/home">
+            <HomePage />
+          </Route>
+          <Route path="/blog">
+            <BlogPage />
+          </Route>
+          <Route path="/events">
+            <EventsPage />
+          </Route>
+          <Route path="/about">
+            <AboutPage />
+          </Route>
+          <Route path="/profile">
+            <ProfilePage />
+          </Route>
+        </Switch>
+      </Router>
+      <footer>
+        <Footer />
+      </footer>
+    </div>
+  );
+};
 
-export default App
+export default App;
