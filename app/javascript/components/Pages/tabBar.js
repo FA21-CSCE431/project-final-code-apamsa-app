@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, Tab } from "@mui/material"
 import { Link } from "react-router-dom"
 import { Fragment } from "react"
-import Calendar from "react-calendar"
+// import Calendar from "react-calendar"
 import styled from 'styled-components'
 
 
@@ -30,9 +30,9 @@ const TabBar = (props) => {
           <Tab value={4} component={Link} to="/profile" label="My Profile" />
         </Tabs>
         <br/>
-        <MainGrid>
+        {/* <MainGrid>
           <Calendar onChange={onChange} value={d_val} />
-        </MainGrid>
+        </MainGrid> */}
       </Header>
     </Fragment>
   );
