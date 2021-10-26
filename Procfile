@@ -1,1 +1,1 @@
-release: rails db:migrate && rails webpacker:install && rails webpacker:install:react && yarn add react-router react-router-dom styled-components @mui/material @emotion/react @emotion/styled react-calendar && rm app/javascript/packs/hello_react.jsx
+release: rails db:migrate && rails webpacker:install && rails webpacker:install:react && yarn add react-router react-router-dom && rm app/javascript/packs/hello_react.jsx
