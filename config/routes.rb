@@ -5,13 +5,20 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users
+      resources :users, param: :email
       resources :events, param: :slug
-      resources :rsvps, only: %i[create destroy update]
+      resources :rsvps, only: [:create, :destroy]
     end
   end
 
-  # Route requests that arent for existing paths back to our index path
-  # this is to handle react router w/o interfering with our actual rails routes
-  get '*path', to: 'pages#index', via: :all
+  # root to: 'dashboards#show'
+
+  # get 'pages' => "pages#index"
+
+  devise_for :admins, controllers: { omniauth_callbacks: 'admins/omniauth_callbacks' }
+  devise_scope :admin do
+    get 'admins/sign_in', to: 'admins/sessions#new', as: :new_admin_session
+    get 'admins/sign_out', to: 'admins/sessions#destroy', as: :destroy_admin_session
+  end
+
 end
