@@ -1,44 +1,50 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class RsvpsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @rsvp = rsvps(:one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get rsvps_url
     assert_response :success
   end
 
-  test "should get new" do
+  test 'should get new' do
     get new_rsvp_url
     assert_response :success
   end
 
-  test "should create rsvp" do
+  test 'should create rsvp' do
     assert_difference('Rsvp.count') do
-      post rsvps_url, params: { rsvp: { event_date: @rsvp.event_date, event_name: @rsvp.event_name, f_name: @rsvp.f_name, l_name: @rsvp.l_name, uin: @rsvp.uin } }
+      post rsvps_url,
+           params: { rsvp: { event_date: @rsvp.event_date, event_name: @rsvp.event_name, f_name: @rsvp.f_name,
+                             l_name: @rsvp.l_name, uin: @rsvp.uin } }
     end
 
     assert_redirected_to rsvp_url(Rsvp.last)
   end
 
-  test "should show rsvp" do
+  test 'should show rsvp' do
     get rsvp_url(@rsvp)
     assert_response :success
   end
 
-  test "should get edit" do
+  test 'should get edit' do
     get edit_rsvp_url(@rsvp)
     assert_response :success
   end
 
-  test "should update rsvp" do
-    patch rsvp_url(@rsvp), params: { rsvp: { event_date: @rsvp.event_date, event_name: @rsvp.event_name, f_name: @rsvp.f_name, l_name: @rsvp.l_name, uin: @rsvp.uin } }
+  test 'should update rsvp' do
+    patch rsvp_url(@rsvp),
+          params: { rsvp: { event_date: @rsvp.event_date, event_name: @rsvp.event_name, f_name: @rsvp.f_name,
+                            l_name: @rsvp.l_name, uin: @rsvp.uin } }
     assert_redirected_to rsvp_url(@rsvp)
   end
 
-  test "should destroy rsvp" do
+  test 'should destroy rsvp' do
     assert_difference('Rsvp.count', -1) do
       delete rsvp_url(@rsvp)
     end
