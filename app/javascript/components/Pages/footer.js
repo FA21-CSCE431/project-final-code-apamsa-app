@@ -13,8 +13,10 @@ const Footer = () => {
       }}
     >
       <Stack spacing={2}>
-        <SocialIcon network="facebook" />
-        <SocialIcon network="linkedin" />
+        <SocialIcon network="facebook" url="https://business.facebook.com/TAMU.APAMSA/" />
+        <SocialIcon network="instagram" url="https://www.instagram.com/tamucomapamsa/" />
+        <SocialIcon network="mailto" url="mailto:apamsa.tamucom@gmail.com" />
+        <SocialIcon url="https://linktr.ee/tamucomapamsa" />
       </Stack>
     </div>
   );
