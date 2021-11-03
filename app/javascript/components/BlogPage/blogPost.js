@@ -9,7 +9,6 @@ const Card = styled.div`
 `
 
 const BlogPost = ({title, description, link, canComment, ...props}) => {
-  const disable = useState(canComment)
 
   return (
     <Card>
@@ -26,7 +25,7 @@ const BlogPost = ({title, description, link, canComment, ...props}) => {
             multiline
             rows={4}
             defaultValue="Enter your reply here"
-            disabled={disable}
+            disabled={!canComment}
           />
           <Button variant="contained" endIcon={<SendIcon />} size="small">Submit</Button> 
           {/* <Button variant="contained" onClick={() => setDisable(false)}>Enable Commenting</Button>
