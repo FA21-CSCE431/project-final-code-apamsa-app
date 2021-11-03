@@ -7,17 +7,19 @@ import EventsPage from "./Pages/eventsPage";
 import AboutPage from "./Pages/aboutPage";
 import ProfilePage from "./Pages/profilePage";
 import Footer from "./Pages/footer";
+import TabBar from "./Pages/tabBar";
+import HeadImage from '../../assets/images/apamsa2.png'
 
 
 const App = () => {
   return (
     <div>
+      <div style={{width: '100%', display: 'flex', margin: '0 !important'}}>
+        <img src={HeadImage} style={{width: '100%', display: 'flex'}} />
+      </div>
       <Router>
         <Switch>
           <Route exact path="/" component={HomePage}/>
-          <Route path="/home">
-            <HomePage />
-          </Route>
           <Route path="/blog">
             <BlogPage />
           </Route>

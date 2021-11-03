@@ -8,12 +8,14 @@ Rails.application.routes.draw do
       resources :users, param: :email
       resources :events, param: :slug
       resources :rsvps, only: [:create, :destroy]
+      resources :blog_posts
     end
   end
 
   # root to: 'dashboards#show'
 
   # get 'pages' => "pages#index"
+  match '*path', to: 'pages#index', via: :all
 
   devise_for :admins, controllers: { omniauth_callbacks: 'admins/omniauth_callbacks' }
   devise_scope :admin do

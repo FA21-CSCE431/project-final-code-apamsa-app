@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,42 +10,67 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_211_020_004_023) do
+ActiveRecord::Schema.define(version: 2021_11_02_234255) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'events', force: :cascade do |t|
-    t.string 'event_name'
-    t.date 'event_date'
-    t.string 'description'
-    t.string 'event_start_time'
-    t.string 'event_end_time'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.string 'slug'
-    t.string 'img_url'
+  create_table "admins", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "full_name"
+    t.string "uid"
+    t.string "avatar_url"
+    t.boolean "is_admin"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_admins_on_email", unique: true
   end
 
-  create_table 'rsvps', force: :cascade do |t|
-    t.string 'event_name'
-    t.date 'event_date'
-    t.string 'f_name'
-    t.string 'l_name'
-    t.string 'email'
-    t.bigint 'event_id', null: false
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.index ['event_id'], name: 'index_rsvps_on_event_id'
+  create_table "blog_posts", force: :cascade do |t|
+    t.boolean "canComment"
+    t.text "description"
+    t.string "link"
+    t.string "title"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_blog_posts_on_user_id"
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'f_name'
-    t.string 'l_name'
-    t.string 'email'
-    t.boolean 'isAdmin'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
+  create_table "events", force: :cascade do |t|
+    t.string "event_name"
+    t.date "event_date"
+    t.string "description"
+    t.string "slug"
+    t.string "img_url"
+    t.string "event_start_time"
+    t.string "event_end_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key 'rsvps', 'events'
+  create_table "rsvps", force: :cascade do |t|
+    t.string "event_name"
+    t.date "event_date"
+    t.string "name"
+    t.string "email"
+    t.bigint "event_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["event_id"], name: "index_rsvps_on_event_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "user_id"
+    t.string "name"
+    t.string "email"
+    t.string "image_url"
+    t.string "google_token"
+    t.string "google_refresh_token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "blog_posts", "users"
+  add_foreign_key "rsvps", "events"
 end
