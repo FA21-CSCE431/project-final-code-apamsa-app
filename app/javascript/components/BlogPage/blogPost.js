@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from 'styled-components'
-import { TextField, Button, Stack, SendIcon } from "@mui/material";
-// import SendIcon from '@mui/icons-material/Send';
+import { TextField, Button, Stack } from "@mui/material";
+import { SendIcon } from '@mui/icons-material';
 
 const Card = styled.div`
   border: 1px solid #efefef;
