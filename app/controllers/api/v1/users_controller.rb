@@ -4,6 +4,7 @@ class Api::V1::UsersController < ApplicationController
     user = User.all
     
     render json: UserSerializer.new(user).serialized_json
+  end
 
   def show
     user = User.find_by(email: params[:email])
