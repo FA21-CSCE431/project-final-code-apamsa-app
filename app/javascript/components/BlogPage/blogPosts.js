@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Stack } from "@mui/material";
+import { Stack, Button, Card, CardActions } from "@mui/material";
 import Calendar from "react-calendar"
 import axios from 'axios'
 import styled from 'styled-components'
 import BlogPost from "./blogPost";
+import CreatePost from "./createPost"
 
 const Grid = styled.div`
   display: grid;
@@ -29,17 +30,12 @@ const BlogPosts = () => {
     setDateValue(nextValue);
   }
 
-  /* Comments */
-  const [disable, setDisable] = useState(false);
-
   /* Posts */
-  const [blogPosts, setPost] = useState([])
-  // const [rsvp, setRsvp] = useState({})
+  const [blogPosts, setPost] = useState([]);
 
   useEffect(() => {
     axios.get('api/v1/blog_posts.json')
     .then( resp => setPost(resp.data.data))
-    // .then( resp => console.log(resp))
     .catch( resp => console.log(resp))
   }, [blogPosts.length])
 
@@ -68,15 +64,18 @@ const BlogPosts = () => {
         justifyContent="space-evenly"
         alignItems="stretch"
       >
+        
         {/* Calendar */}
         <div style={{ width: "33%" }}>
           <Calendar onChange={onChange} value={dateValue} />
         </div>
-        {/* Calendar End */}
+
 
         {/* Blog Posts */}
-        <Grid>{grid}</Grid>
-        {/* Blog Posts End */}
+        <Grid>
+          <CreatePost /> {/* Only for ADMIN */}
+          {grid}
+        </Grid>
 
       </Stack>
     </div>

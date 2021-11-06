@@ -1,36 +1,43 @@
 import React, { useState } from "react";
-import styled from 'styled-components'
 import { TextField, Button, Stack } from "@mui/material";
-import { SendIcon } from '@mui/icons-material';
-
-const Card = styled.div`
-  border: 1px solid #efefef;
-  background: #fff;
-`
+import { styled } from '@mui/material/styles';
+// import { SendIcon } from '@mui/icons-material';
+import { Card, CardHeader, CardContent, CardActions, Typography, IconButton } from "@mui/material"
+import LinkIcon from '@mui/icons-material/Link';
+import SendSharpIcon from "@mui/icons-material/SendSharp"
 
 const BlogPost = ({title, description, link, canComment, ...props}) => {
 
   return (
     <Card>
-      <body>{description}</body>
-      <Stack spacing={4} direction="column">
-          <h3>{title}</h3>
-          <h5>{link}</h5>
-          <p>{description}</p>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-multiline-static"
-            label="Comment"
-            multiline
-            rows={4}
-            defaultValue="Enter your reply here"
-            disabled={!canComment}
-          />
-          <Button variant="contained" endIcon={<SendIcon />} size="small">Submit</Button> 
-          {/* <Button variant="contained" onClick={() => setDisable(false)}>Enable Commenting</Button>
-          <Button variant="contained" onClick={() => setDisable(true)}>Disable Commenting</Button> */}
-        </Stack>
+      <CardHeader 
+        title={title}
+      />
+      <CardContent>
+        <Typography paragraph>
+          {description}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <IconButton aria-label="Link to" href={link}>
+          <LinkIcon />
+        </IconButton>
+      </CardActions>
+      <CardContent>
+        <TextField
+          fullWidth
+          size="medium"
+          id="outlined-multiline-static"
+          label="Comment"
+          multiline
+          rows={4}
+          defaultValue="Enter your reply here"
+          disabled={!canComment}
+        />
+      </CardContent>
+      <CardActions>
+        <Button variant="contained" endIcon={<SendSharpIcon />} size="small">Submit</Button> 
+      </CardActions>
     </Card>
   )
 } 
