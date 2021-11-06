@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { styled } from '@mui/material/styles';
 import { Button, Card, CardContent, CardActions, Collapse, TextField, ToggleButton, Typography, CardHeader } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import CreateIcon from '@mui/icons-material/Create';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import axios from "axios";
 
 
 const ExpandMore = styled((props) => {
@@ -23,10 +24,15 @@ const CreatePost = () => {
 
   const [selected, setSelected] = useState(false);
 
+  const [blog_post, setPost] = useState({});
+
   var commentsDisabled;
-  if (selected) {
+  if (selected) 
+  {
     commentsDisabled = <CheckBoxIcon />;
-  } else {
+  } 
+  else 
+  {
     commentsDisabled = <CheckBoxOutlineBlankIcon />;
   }
   
@@ -35,14 +41,36 @@ const CreatePost = () => {
     setExpanded(!expanded);
   };
 
-  const handleSumbitClick = () => {
+  const handleSubmitPost = () => {
     console.log("Submit")
+
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+    setPost(Object.assign(blog_post, blog_post, {["user_id"]: 1}))
+
+    axios.post('/api/v1/blog_posts', {blog_post})
+    .then(resp => {
+      setPost({title: '', link: '', description: ''})
+    })
+    .catch(resp => {})
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault()
+
+    setPost(Object.assign({}, blog_post, {[e.target.name]: e.target.value}))
+  };
+
+  const handleDisableComments = (e) => {
+    setSelected(!selected);
+
+    setPost(Object.assign(blog_post, blog_post, {["canComment"]: selected}))
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card>
       <CardHeader
-        title="New Post"
         action={
           <ExpandMore
           expand={expanded}
@@ -50,9 +78,9 @@ const CreatePost = () => {
           aria-expanded={expanded}
           aria-label="show more"
           >
-            <IconButton>
-              <CreateIcon />
-            </IconButton>
+            <Button variant='contained' endIcon={<CreateIcon />}>
+              New Post
+            </Button>
           </ExpandMore>
         }
       />
@@ -62,12 +90,19 @@ const CreatePost = () => {
             id="outlined-textarea"
             label="Title"
             placeholder="Title"
+            onChange={handleChange}
+            value={blog_post.title}
+            name="title"
             multiline
           />
           <TextField
             id="outlined-textarea"
             label="Link"
             placeholder="Link"
+            onChange={handleChange}
+            value={blog_post.link}
+            name="link"
+
             multiline
           />
         </CardActions>
@@ -76,6 +111,10 @@ const CreatePost = () => {
               id="outlined-multiline-static"
               label="Description"
               multiline
+              onChange={handleChange}
+              value={blog_post.description}
+              name="description"
+
               rows={4}
             />
         </CardActions>
@@ -84,17 +123,16 @@ const CreatePost = () => {
             Disable comments?  
           </Typography>
           <ToggleButton
-            value="check"
-            onChange={() => {
-              setSelected(!selected);
-            }}
+            onChange={handleDisableComments}
+            name="canComment"
+            selected={selected}
           >
             {commentsDisabled}
           </ToggleButton>
         </CardActions>
-        <CardHeader title="Submit" action={
-            <Button variant="contained" onClick={handleSumbitClick}>
-              Submit
+        <CardHeader action={
+            <Button variant="contained" onClick={handleSubmitPost}>
+              Post
             </Button>
           }
         />

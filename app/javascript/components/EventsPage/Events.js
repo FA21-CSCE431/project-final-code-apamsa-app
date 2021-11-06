@@ -4,7 +4,6 @@ import axios from 'axios'
 import styled from 'styled-components'
 import Button from '@mui/material/Button'
 import { Link } from 'react-router-dom'
-import HomePage from '../Pages/homePage'
 
 
 const Grid = styled.div`

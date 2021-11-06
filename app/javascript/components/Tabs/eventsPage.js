@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import TabBar from "./tabBar";
-import Events from "../Events/Events"
+import Events from "../EventsPage/Events"
 import Stack from '@mui/material/Stack';
 import Calendar from "react-calendar"
 

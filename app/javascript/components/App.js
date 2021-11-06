@@ -1,13 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import HomePage from "./Pages/homePage";
-import BlogPage from "./Pages/blogPage";
-import EventsPage from "./Pages/eventsPage";
-import AboutPage from "./Pages/aboutPage";
-import ProfilePage from "./Pages/profilePage";
-import Footer from "./Pages/footer";
-import TabBar from "./Pages/tabBar";
+import HomePage from "./Tabs/homePage";
+import BlogPage from "./Tabs/blogPage";
+import EventsPage from "./Tabs/eventsPage";
+import AboutPage from "./Tabs/aboutPage";
+import ProfilePage from "./Tabs/profilePage";
+import Footer from "./Tabs/footer";
 import HeadImage from '../../assets/images/apamsa2.png'
 
 
