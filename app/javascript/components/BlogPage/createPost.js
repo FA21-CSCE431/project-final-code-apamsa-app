@@ -35,8 +35,12 @@ const CreatePost = () => {
     setExpanded(!expanded);
   };
 
+  const handleSumbitClick = () => {
+    console.log("Submit")
+  };
+
   return (
-    <Card>
+    <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         title="New Post"
         action={
@@ -88,6 +92,12 @@ const CreatePost = () => {
             {commentsDisabled}
           </ToggleButton>
         </CardActions>
+        <CardHeader title="Submit" action={
+            <Button variant="contained" onClick={handleSumbitClick}>
+              Submit
+            </Button>
+          }
+        />
       </Collapse>
     </Card>
   )
