@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :events, param: :slug
       resources :rsvps, only: [:create, :destroy]
       resources :blog_posts
+      resources :comments
     end
   end
 

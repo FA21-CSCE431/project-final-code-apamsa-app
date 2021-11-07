@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TabBar from "./tabBar";
-import BlogPosts from "../BlogPage/blogPosts";
+import BlogPosts from "../BlogPage/showBlogPosts";
 
 const BlogPage = () => {
 
