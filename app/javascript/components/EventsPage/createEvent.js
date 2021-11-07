@@ -45,6 +45,8 @@ const CreateEvent = () => {
       setEvent({event_name: '', event_date: '', description: '', event_start_time: '', event_end_time: ''})
     })
     .catch(resp => {})
+
+    setExpanded(false)
   };
 
   const handleChange = (e) => {
@@ -64,7 +66,7 @@ const CreateEvent = () => {
   return (
     <Paper>
       <CardHeader
-        title={<Button variant='contained'>New Event</Button>}
+        title={<Typography variant='h4'>New Event</Typography>}
         action={
           <ExpandMore
           expand={expanded}
@@ -72,22 +74,12 @@ const CreateEvent = () => {
           aria-expanded={expanded}
           aria-label="show more"
           >
-            {/* <Button variant='contained' endIcon={<AddIcon />}>
-              New Event
-            </Button> */}
             <IconButton>
               <AddIcon />
             </IconButton>
           </ExpandMore>
         }
       />
-      {/*     t.string "event_name"
-    t.date "event_date"
-    t.string "description"
-    t.string "slug"
-    t.string "img_url"
-    t.string "event_start_time"
-    t.string "event_end_time" */}
       <Collapse in={expanded} timeout="auto" unmountOnExit>
 
         <CardActions>
