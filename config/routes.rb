@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :users, param: :email
+      resources :users, param: :user_id
       resources :events, param: :slug
       resources :rsvps, only: [:create, :destroy]
       resources :blog_posts
