@@ -1,52 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react'
+import { Card, CardActions, CardMedia, CardHeader, Button, CardContent, Paper, Typography } from '@mui/material'
 import { BrowserRouter as Router, Link } from 'react-router-dom'
-
-const Card = styled.div`
-  border: 1px solid #efefef;
-  background: #fff;
-`
-
-const EventName = styled.div`
-  padding: 20px 0 10px 0;
-`
-const EventDate = styled.div`
-  padding: 20px 0 10px 0;
-`
-
-const EventFlyer = styled.div`
-  height: 50px;
-  img {
-    height: 110px;
-    width: 85px;
-  }
-`
-
-const LinkWrapper = styled.div`
-  margin: 30px 0 20px 0;
-  height:50px;
-  a {
-    color: #fff;
-    background-color: #191d74;
-    border-radius: 4px;
-    padding: 10px 50px;
-    cursor: pointer;
-    border-radius: 3px;
-    border: 1px solid #191d74;
-    text-align: center;
-    line-height: 20px;
-    min-height: 60px;
-    margin: 7px;
-    font-weight: 600;
-    text-decoration: none;
-    width: 100%;
-    transition: ease-in-out 0.1s;
-    &:hover{
-      border-color: #6c72ff;
-      background: #6c72ff;
-    }
-  }
-`
+import PlaceholdreImage from '../../../assets/images/apamsa.png'
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import BeenhereIcon from '@mui/icons-material/Beenhere';
 
 const Event = ({ event_name, 
                  event_date, 
@@ -55,22 +13,58 @@ const Event = ({ event_name,
                  event_end_time, 
                  slug, 
                  img_url,
-                 ...props }) => {
+                 ...props }) => 
+{
+  var rsvpAlert;
+
+  const [rsvped, setRsvped] = useState(false);
+
+  const handleRsvp = () => {
+    setRsvped(true)
+  };
+
+  if (rsvped)
+  {
+    rsvpAlert = (
+      <Alert severity='success'>
+        <AlertTitle>Successful Rsvp</AlertTitle>
+        Your RSVP was successful - <strong>Don't forget to add it to your calendar!</strong>
+      </Alert>
+    )
+  }
+  else 
+  {
+    rsvpAlert = (
+      <Button variant='contained' endIcon={<BeenhereIcon />} onClick={handleRsvp}>
+        RSVP Here
+      </Button> 
+    )
+  }
+
   return (
-    <Card>
-      {/* <EventFlyer>
-        <img src={img_url} alt={event_name} width="50"/>
-      </EventFlyer> */}
-      <EventName>
-        {event_name}
-      </EventName>
-      <EventDate>
-        {event_date}
-      </EventDate>
-      <LinkWrapper>
-        <Link to={"/events/" + slug}>Rsvp</Link>
-      </LinkWrapper>
-    </Card>
+    <Paper>
+      <CardMedia
+        component='img'
+        image={PlaceholdreImage}
+        alt='Event flyer 1'
+      />
+      <CardHeader
+        title={event_name}
+        subheader={event_date}
+      />
+      <CardContent>
+        <Typography variant='subtitle1'>
+          {event_start_time} to {event_end_time}
+        </Typography>
+        <br />
+        <Typography paragraph>
+          {description}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        {rsvpAlert}
+      </CardActions>
+    </Paper>
   )
 }
 

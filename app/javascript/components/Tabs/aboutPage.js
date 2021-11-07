@@ -1,5 +1,7 @@
 import React from "react";
 import TabBar from "./tabBar";
+import Calendar from "./calendar";
+import { Card } from "@mui/material";
 
 const AboutPage = () => {
   return (
@@ -7,6 +9,9 @@ const AboutPage = () => {
       <header>
         <TabBar tabValue={3} />
       </header>
+      <Card>
+        <Calendar />
+      </Card>
     </div>
   );
 };

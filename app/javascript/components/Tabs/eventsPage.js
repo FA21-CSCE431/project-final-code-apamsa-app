@@ -1,27 +1,19 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import TabBar from "./tabBar";
 import Events from "../EventsPage/Events"
 import Stack from '@mui/material/Stack';
-import Calendar from "react-calendar"
+import Calendar from "./calendar";
 
 const EventsPage = () => {
-  const [value, setValue] = useState(new Date());
-
-  function onChange(nextValue) {
-    setValue(nextValue);
-  }
-
+  
   return (
     <div>
       <header>
         <TabBar tabValue={2} />
       </header>
       <Stack spacing={20} direction="row" justifyContent="space-evenly">
-        <Calendar onChange={onChange} value={value} />
+        <Calendar />
         <Events/>
-        <div>
-          <p>Place Holder</p>
-        </div>
       </Stack>
     </div>
   );

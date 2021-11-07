@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import Event from './Event'
 import axios from 'axios'
 import styled from 'styled-components'
-import Button from '@mui/material/Button'
-import { Link } from 'react-router-dom'
+import { Stack } from '@mui/material'
+import CreateEvent from './createEvent'
 
 
 const Grid = styled.div`
@@ -22,6 +22,15 @@ const Grid = styled.div`
 `
 
 const Events = () => {
+
+  // Calendar
+  const [dateValue, setdateValue] = useState(new Date());
+
+  function onChange(nextValue) {
+    setdateValue(nextValue);
+  }
+
+  // Events api
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
@@ -30,6 +39,7 @@ const Events = () => {
     .catch( resp => console.log(resp))
   }, [events.length])
 
+  // Events layout
   const grid = events.map( (event, index) => {
     const { event_name, 
             event_date, 
@@ -53,19 +63,21 @@ const Events = () => {
     )
   })
 
-  // const list = events.map( item => {
-  //   return (<li key={item.attributes.event_name}>{item.attributes.event_name}</li>)
-  // })
-
-  const link_to = () => {
-    return <Link to={"/home/"}/>
-  }
-
   return (
-    <div>
-      <h1>Events Page</h1>
-      <Button variant="contained" href="/home">+ Add Event</Button>
-      <Grid>{grid}</Grid>
+    <div style={{ margin: "5px 15px 10px" }}>
+      <Stack 
+        spacing={10} 
+        direction="row" 
+        justifyContent="space-evenly"
+        alignItems="stretch"
+      >
+        {/* Blog Posts */}
+        <Grid>
+          <CreateEvent /> {/* Only for ADMIN */}
+          {grid}
+        </Grid>
+
+      </Stack>
     </div>
   )
 }
