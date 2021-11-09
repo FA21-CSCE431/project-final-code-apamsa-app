@@ -1,12 +1,36 @@
 import React, { Fragment, useState } from "react";
-import { TextField, Button, Stack } from "@mui/material";
-import { styled } from '@mui/material/styles';
-// import { SendIcon } from '@mui/icons-material';
-import { Card, CardHeader, CardContent, CardActions, Typography, IconButton } from "@mui/material"
+import { TextField, Button } from "@mui/material";
+import {  CardActions, CardHeader, CardContent, 
+  Paper, Typography, IconButton, Dialog, 
+  DialogTitle, DialogActions,
+  AlertTitle, Alert }  from "@mui/material"
 import LinkIcon from '@mui/icons-material/Link';
 import SendSharpIcon from "@mui/icons-material/SendSharp"
+import DeleteIcon from '@mui/icons-material/Delete'
+import CloseIcon from '@mui/icons-material/Close'
+import axios from "axios";
 
-const BlogPost = ({title, description, link, canComment, ...props}) => {
+
+const BlogPost = ({title, description, link, canComment, slug, ...props}) => {
+
+  const [openConfirmDelete, setOpenConfirmnDelete] = useState(false);
+  const [openDeleted, setOpenDeleted] = useState(false);
+
+  const handleDeleteClick = () => {
+    setOpenConfirmnDelete(true)
+  };
+
+
+  const handleConfirmDelete = () => {
+    const url = `/api/v1/blog_posts/${slug}}`
+
+    axios.delete(url)
+    .then( resp => console.log(resp) )
+    .catch( resp => console.log(resp) )
+
+    setOpenDeleted(true)
+    setOpenConfirmnDelete(false)
+  };
 
   var commentComponent;
   if (canComment)
@@ -45,22 +69,59 @@ const BlogPost = ({title, description, link, canComment, ...props}) => {
   }
 
   return (
-    <Card>
-      <CardHeader 
-        title={title}
-      />
-      <CardContent>
-        <Typography paragraph>
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <IconButton aria-label="Link to" href={link}>
-          <LinkIcon />
-        </IconButton>
-      </CardActions>
-      {commentComponent}
-    </Card>
+    <div>
+      <Paper>
+        <CardHeader 
+          title={title}
+        />
+        <CardContent>
+          <Typography paragraph>
+            {description}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <IconButton aria-label="Link to" href={link}>
+            <LinkIcon />
+          </IconButton>
+          <IconButton onClick={handleDeleteClick}>
+            <DeleteIcon /> 
+          </IconButton>
+        </CardActions>
+        {commentComponent}
+      </Paper>
+
+      <Dialog
+        open={openConfirmDelete}
+        onClose={() => {setOpenConfirmnDelete(false)}}
+      >
+        <DialogTitle>
+          {`Are you sure you want to delete ${title}`}
+        </DialogTitle>
+        <DialogActions>
+          <Button variant='contained' onClick={handleConfirmDelete}>
+            Yes
+          </Button>
+          <Button variant='contained' onClick={() => {setOpenConfirmnDelete(false)}}>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openDeleted}
+        onClose={() => {setOpenDeleted(false)}}
+      >
+        <DialogTitle id='alert-dialog-title'>
+          <Alert>
+            {title} was successfully deleted! 
+          </Alert>
+        </DialogTitle>
+        <DialogActions>
+          <IconButton onClick={() => {setOpenDeleted(false)}}>
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
+      </Dialog>      
+    </div>
   )
 } 
 

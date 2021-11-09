@@ -54,6 +54,8 @@ const CreatePost = () => {
       setPost({title: '', link: '', description: ''})
     })
     .catch(resp => {})
+
+    setExpanded(false)
   };
 
   const handleChange = (e) => {

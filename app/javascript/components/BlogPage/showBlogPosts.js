@@ -43,7 +43,8 @@ const BlogPosts = () => {
     const { canComment,
             description,
             link,
-            title } = blogPost.attributes
+            title,
+            slug } = blogPost.attributes
     
     return (
       <BlogPost
@@ -52,6 +53,7 @@ const BlogPosts = () => {
         description={description}
         link={link} 
         canComment={canComment}
+        slug={slug}
       />
     )
   })

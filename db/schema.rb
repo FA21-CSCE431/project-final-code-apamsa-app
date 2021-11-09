@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_07_003934) do
+ActiveRecord::Schema.define(version: 2021_11_08_225301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 2021_11_07_003934) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
     t.index ["user_id"], name: "index_blog_posts_on_user_id"
   end
 
@@ -74,7 +75,7 @@ ActiveRecord::Schema.define(version: 2021_11_07_003934) do
     t.string "user_id"
     t.string "name"
     t.string "email"
-    t.string "image_url"
+    t.string "img_url"
     t.string "google_token"
     t.string "google_refresh_token"
     t.datetime "created_at", precision: 6, null: false

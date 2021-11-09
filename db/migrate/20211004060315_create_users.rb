@@ -6,7 +6,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :user_id
       t.string :name
       t.string :email
-      t.string :image_url
+      t.string :img_url
       t.string :google_token
       t.string :google_refresh_token
 

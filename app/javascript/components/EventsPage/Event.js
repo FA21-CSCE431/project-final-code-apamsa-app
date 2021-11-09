@@ -75,6 +75,7 @@ const Event = ({ event_name,
           </IconButton>
         </CardActions>
       </Paper>
+      
       <Dialog
         open={openConfirmDelete}
         onClose={() => {setOpenConfirmnDelete(false)}}
@@ -90,22 +91,22 @@ const Event = ({ event_name,
             No
           </Button>
         </DialogActions>
-    </Dialog>
-    <Dialog
-      open={openDeleted}
-      onClose={() => {setOpenDeleted(false)}}
-    >
-      <DialogTitle id='alert-dialog-title'>
-        <Alert>
-          {event_name} was successfully deleted! 
-        </Alert>
-      </DialogTitle>
-      <DialogActions>
-        <IconButton onClick={() => {setOpenDeleted(false)}}>
-          <CloseIcon />
-        </IconButton>
-      </DialogActions>
-    </Dialog>
+      </Dialog>
+      <Dialog
+        open={openDeleted}
+        onClose={() => {setOpenDeleted(false)}}
+      >
+        <DialogTitle id='alert-dialog-title'>
+          <Alert>
+            {event_name} was successfully deleted! 
+          </Alert>
+        </DialogTitle>
+        <DialogActions>
+          <IconButton onClick={() => {setOpenDeleted(false)}}>
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
+      </Dialog>
     <Dialog
       open={openRsvp}
       onClose={() => {setOpenRsvp(false)}}

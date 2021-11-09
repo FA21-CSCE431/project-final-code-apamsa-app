@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       resources :users, param: :user_id
       resources :events, param: :slug
       resources :rsvps, only: [:create, :destroy]
-      resources :blog_posts
+      resources :blog_posts, param: :slug
       resources :comments
     end
   end

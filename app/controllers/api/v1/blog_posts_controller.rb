@@ -10,7 +10,7 @@ class Api::V1::BlogPostsController < ApplicationController
   end
 
   def show
-    bp = BlogPost.find(params[:id])
+    bp = BlogPost.find_by(slug: params[:slug])
 
     render json: BlogPostSerializer.new(bp).serialized_json
   end
@@ -26,7 +26,7 @@ class Api::V1::BlogPostsController < ApplicationController
   end
 
   def update
-    bp = BlogPost.find(params[:id])
+    bp = BlogPost.find_by(slug: params[:slug])
 
     if bp.update(blog_post_params)
       render json: BlogPostSerializer.new(bp).serialized_json
@@ -36,7 +36,7 @@ class Api::V1::BlogPostsController < ApplicationController
   end
 
   def destroy
-    bp = BlogPost.find(params[:id])
+    bp = BlogPost.find_by(slug: params[:slug])
 
     if bp.destroy
       head :no_content
@@ -48,7 +48,7 @@ class Api::V1::BlogPostsController < ApplicationController
   private
 
   def blog_post_params
-    params.require(:blog_post).permit(:canComment, :description, :link, :title, :user_id)
+    params.require(:blog_post).permit(:canComment, :description, :link, :title, :user_id, :slug)
   end
 
 end

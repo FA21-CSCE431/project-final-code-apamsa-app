@@ -92,16 +92,6 @@ const CreateEvent = () => {
             name="event_name"
             multiline
           />
-          {/* <TextField
-            id="outlined-textarea"
-            label="Date"
-            placeholder="Date"
-            onChange={handleChange}
-            value={event.event_date}
-            name="event_date"
-
-            multiline
-          /> */}
         </CardActions>
         <CardActions>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
