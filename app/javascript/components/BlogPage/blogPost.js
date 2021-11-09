@@ -22,7 +22,7 @@ const BlogPost = ({title, description, link, canComment, slug, ...props}) => {
 
 
   const handleConfirmDelete = () => {
-    const url = `/api/v1/blog_posts/${slug}}`
+    const url = `/api/v1/blog_posts/${slug}`
 
     axios.delete(url)
     .then( resp => console.log(resp) )
