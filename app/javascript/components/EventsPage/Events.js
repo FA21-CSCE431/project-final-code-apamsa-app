@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import Event from './Event'
 import axios from 'axios'
 import styled from 'styled-components'
@@ -32,13 +33,11 @@ const Events = () => {
     setdateValue(nextValue);
   }
 
-  const events = useSelector((state) => state.events.addEvent);
+  const events = useSelector((state) => state.events.currentEvents);
 
-  useEffect(() => {
-    axios.get('api/v1/events.json')
-    .then( resp => dispatch(addEvents(resp.data.data)))
-    .catch( resp => console.log(resp))
-  }, [events.length])
+  axios.get('api/v1/events.json')
+  .then( resp => {console.log(resp), dispatch(addEvents(resp.data.data))})
+  .catch( resp => console.log(resp))
 
   // Events layout
   const grid = events.map( (event, index) => {
