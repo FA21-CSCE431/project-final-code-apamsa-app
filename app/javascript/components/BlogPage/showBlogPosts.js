@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Stack, Button, Card, CardActions } from "@mui/material";
 import Calendar from "react-calendar"
 import axios from 'axios'
@@ -32,6 +33,7 @@ const BlogPosts = () => {
 
   /* Posts */
   const [blogPosts, setPost] = useState([]);
+  const is_admin = useSelector((state) => state.user.admin);
 
   useEffect(() => {
     axios.get('api/v1/blog_posts.json')
@@ -75,7 +77,9 @@ const BlogPosts = () => {
 
         {/* Blog Posts */}
         <Grid>
-          <CreatePost /> {/* Only for ADMIN */}
+          {is_admin == true && (
+            <CreatePost />
+          )}
           {grid}
         </Grid>
 

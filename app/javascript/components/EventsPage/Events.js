@@ -4,6 +4,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 import { Stack } from '@mui/material'
 import CreateEvent from './createEvent'
+import { addEvents } from "../objects/event/eventsSlice";
 
 
 const Grid = styled.div`
@@ -25,17 +26,17 @@ const Events = () => {
 
   // Calendar
   const [dateValue, setdateValue] = useState(new Date());
+  const dispatch = useDispatch();
 
   function onChange(nextValue) {
     setdateValue(nextValue);
   }
 
-  // Events api
-  const [events, setEvents] = useState([]);
+  const events = useSelector((state) => state.events.addEvent);
 
   useEffect(() => {
     axios.get('api/v1/events.json')
-    .then( resp => setEvents(resp.data.data))
+    .then( resp => dispatch(addEvents(resp.data.data)))
     .catch( resp => console.log(resp))
   }, [events.length])
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import {  CardActions, CardMedia, CardHeader, 
           Button, CardContent, Paper, Typography, 
           IconButton, Dialog, DialogTitle, DialogActions,
@@ -25,6 +26,7 @@ const Event = ({ event_name,
   const [openConfirmDelete, setOpenConfirmnDelete] = useState(false);
   const [openDeleted, setOpenDeleted] = useState(false);
   const [openRsvp, setOpenRsvp] = useState(false);
+  const is_admin = useSelector((state) => state.user.admin);
 
   const handleRsvpClick = () => {
     setOpenRsvp(true)
@@ -69,10 +71,12 @@ const Event = ({ event_name,
         <CardActions>
           <Button variant='contained' endIcon={<BeenhereIcon />} onClick={handleRsvpClick}>
             RSVP Here
-          </Button> 
-          <IconButton onClick={handleDeleteClick}>
-            <DeleteIcon /> 
-          </IconButton>
+          </Button>
+          {is_admin == true && (
+            <IconButton onClick={handleDeleteClick}>
+              <DeleteIcon /> 
+            </IconButton>
+          )}
         </CardActions>
       </Paper>
       

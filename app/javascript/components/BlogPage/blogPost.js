@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { TextField, Button } from "@mui/material";
 import {  CardActions, CardHeader, CardContent, 
   Paper, Typography, IconButton, Dialog, 
@@ -15,6 +16,7 @@ const BlogPost = ({title, description, link, canComment, slug, ...props}) => {
 
   const [openConfirmDelete, setOpenConfirmnDelete] = useState(false);
   const [openDeleted, setOpenDeleted] = useState(false);
+  const is_admin = useSelector((state) => state.user.admin);
 
   const handleDeleteClick = () => {
     setOpenConfirmnDelete(true)
@@ -83,9 +85,11 @@ const BlogPost = ({title, description, link, canComment, slug, ...props}) => {
           <IconButton aria-label="Link to" href={link}>
             <LinkIcon />
           </IconButton>
-          <IconButton onClick={handleDeleteClick}>
-            <DeleteIcon /> 
-          </IconButton>
+          {is_admin == true && (
+            <IconButton onClick={handleDeleteClick}>
+              <DeleteIcon /> 
+            </IconButton>
+          )}
         </CardActions>
         {commentComponent}
       </Paper>
