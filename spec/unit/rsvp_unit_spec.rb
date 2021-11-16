@@ -11,8 +11,7 @@ RSpec.describe Rsvp, type: :model do
                        event_start_time: '12:20 pm',
                        event_end_time: '12:40 pm')
 
-    described_class.new(f_name: 'Testy',
-                        l_name: 'McTesterson',
+    described_class.new(name: 'Testy McTesterson',
                         email: 'tmctesterson@yahoo.com',
                         event_id: @event.id)
   end
@@ -32,14 +31,10 @@ RSpec.describe Rsvp, type: :model do
   end
 
   it 'is not valid without a first name' do
-    subject.f_name = nil
+    subject.name = nil
     expect(subject).not_to be_valid
   end
 
-  it 'is not valid without a last name' do
-    subject.l_name = nil
-    expect(subject).not_to be_valid
-  end
 
   it 'is not valid without a email' do
     subject.email = nil
