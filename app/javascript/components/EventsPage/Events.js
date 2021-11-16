@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import Event from './Event'
-import axios from 'axios'
-import styled from 'styled-components'
-import { Stack } from '@mui/material'
-import CreateEvent from './createEvent'
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Event from "./Event";
+import axios from "axios";
+import styled from "styled-components";
+import { Stack } from "@mui/material";
+import CreateEvent from "./createEvent";
+import { setEvents, incrementCount } from "../objects/event/eventsSlice";
 
 const Grid = styled.div`
   display: grid;
@@ -19,55 +20,68 @@ const Grid = styled.div`
     border-radius: 5px;
     padding: 20px;
   }
-`
+`;
 
 const Events = () => {
-
   // Calendar
   const [dateValue, setdateValue] = useState(new Date());
+  const dispatch = useDispatch();
 
   function onChange(nextValue) {
     setdateValue(nextValue);
   }
 
-  // Events api
-  const [events, setEvents] = useState([]);
+  const events = useSelector((state) => state.events.currentEvents);
+
+  const getEvents = () => {
+    axios
+      .get("api/v1/events.json")
+      .then((resp) => {
+        dispatch(setEvents(resp.data.data));
+      })
+      .catch((resp) => console.log(resp));
+  };
+
+  const updates = useSelector((state) => state.events.updateCount);
 
   useEffect(() => {
-    axios.get('api/v1/events.json')
-    .then( resp => setEvents(resp.data.data))
-    .catch( resp => console.log(resp))
-  }, [events.length])
+    getEvents();
+  }, [updates]);
 
   // Events layout
-  const grid = events.map( (event, index) => {
-    const { event_name, 
-            event_date, 
-            description, 
-            event_start_time, 
-            event_end_time, 
-            slug,
-            img_url } = event.attributes
-    
+  const grid = events.map((event, index) => {
+    const {
+      event_name,
+      event_date,
+      description,
+      event_start_time,
+      event_end_time,
+      slug,
+      img_url,
+    } = event.attributes;
+
+    const event_id = event.id;
+
     return (
       <Event
         key={index}
+        event_id={event_id}
         event_name={event_name}
         event_date={event_date}
         description={description}
         event_start_time={event_start_time}
-        event_end_time={event_end_time} 
-        slug={slug} 
+        event_end_time={event_end_time}
+        slug={slug}
         img_url={img_url}
       />
-    )
-  })
+    );
+  });
 
   return (
     <div style={{ margin: "5px 15px 10px" }}>
-      <Stack 
-        spacing={10} 
-        direction="row" 
+      <Stack
+        spacing={10}
+        direction="row"
         justifyContent="space-evenly"
         alignItems="stretch"
       >
@@ -76,10 +90,9 @@ const Events = () => {
           <CreateEvent /> {/* Only for ADMIN */}
           {grid}
         </Grid>
-
       </Stack>
     </div>
-  )
-}
+  );
+};
 
-export default Events
+export default Events;

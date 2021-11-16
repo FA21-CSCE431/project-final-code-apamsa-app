@@ -6,7 +6,7 @@ export const eventsSlice = createSlice({
     currentEvents: [],
   },
   reducers: {
-    addEvent: (state, action) => {
+    addEvents: (state, action) => {
       state.currentEvents = [...state.currentEvents, action.payload];
     },
   },
