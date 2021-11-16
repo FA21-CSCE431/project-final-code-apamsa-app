@@ -40,7 +40,7 @@ module Api
       private
 
       def rsvp_params
-        params.require(:rsvp).permit(:event_name, :event_date, :f_name, :l_name, :email, :event_id)
+        params.require(:rsvp).permit(:event_name, :event_date, :name, :email, :event_id)
       end
     end
   end

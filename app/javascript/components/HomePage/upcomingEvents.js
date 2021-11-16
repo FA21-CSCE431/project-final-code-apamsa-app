@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import TabBar from "./tabBar";
-import styled from 'styled-components'
-import Event from '../Events/Event'
 import axios from "axios";
-import { BrowserRouter as Router, Link } from 'react-router-dom'
 import { DataGrid } from '@mui/x-data-grid'
+import { Stack } from "@mui/material";
+import Calendar from 'react-calendar'
 
-
-
-const HomePage = () => {
+const UpcomingEvents = () => {
 
   const [events, setEvents] = useState([]);
 
@@ -18,9 +14,11 @@ const HomePage = () => {
     .catch( resp => console.log(resp))
   }, [events.length])
 
-  // const list = events.map( item => {
-  //   return (<dt key={item.attributes.event_name}><Link to={"/events/"}>{item.attributes.event_name}{item.attributes.event_date}</Link></dt>)
-  // })
+  const [value, setValue] = useState(new Date());
+
+  function onChange(nextValue) {
+    setValue(nextValue);
+  }
 
   const columns = [
     {
@@ -43,19 +41,26 @@ const HomePage = () => {
     )
   })
 
-  return (
-    <div>
-      <header>
-        <TabBar tabValue={0} />
-      </header>
-      <br/>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        disableColumnReorder
-      />
-    </div>
-  );
-};
 
-export default HomePage;
+  return (
+    <div style={{ margin: "5px 15px 10px" }}>
+      <Stack 
+        spacing={10} 
+        direction="row" 
+        justifyContent="space-evenly"
+        alignItems="stretch"
+      >
+        <div style={{ width: "33%" }}>
+          <Calendar onChange={onChange} value={value} />
+        </div>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          disableColumnReorder
+        />
+      </Stack>
+    </div>
+  )
+}
+
+export default UpcomingEvents

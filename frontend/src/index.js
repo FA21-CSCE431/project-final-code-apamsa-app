@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import LoginPage from "./components/loginPage";
 import Page from "./components/page";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout } from "../objects/user/userSlice";
 
 import store from "./app/store";
 import { Provider } from "react-redux";

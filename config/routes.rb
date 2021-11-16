@@ -1,17 +1,17 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
-  root 'pages#index'
+
+  root to: 'pages#index'
 
   namespace :api do
     namespace :v1 do
-      resources :users
+      resources :users, param: :user_id
       resources :events, param: :slug
-      resources :rsvps, only: %i[create destroy update]
+      resources :rsvps, only: [:create, :destroy]
+      resources :blog_posts, param: :slug
+      resources :comments
     end
   end
 
-  # Route requests that arent for existing paths back to our index path
-  # this is to handle react router w/o interfering with our actual rails routes
-  get '*path', to: 'pages#index', via: :all
+  match '*path', to: 'pages#index', via: :all
+
 end

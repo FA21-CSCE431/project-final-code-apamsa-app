@@ -10,28 +10,60 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_20_004023) do
+ActiveRecord::Schema.define(version: 2021_11_13_182235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "admins", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "full_name"
+    t.string "uid"
+    t.string "avatar_url"
+    t.boolean "is_admin"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_admins_on_email", unique: true
+  end
+
+  create_table "blog_posts", force: :cascade do |t|
+    t.boolean "canComment"
+    t.text "description"
+    t.string "link"
+    t.string "title"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
+    t.index ["user_id"], name: "index_blog_posts_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "description"
+    t.bigint "blog_post_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["blog_post_id"], name: "index_comments_on_blog_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "event_name"
     t.date "event_date"
     t.string "description"
+    t.string "slug"
+    t.string "img_url"
     t.string "event_start_time"
     t.string "event_end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "slug"
-    t.string "img_url"
   end
 
   create_table "rsvps", force: :cascade do |t|
     t.string "event_name"
     t.date "event_date"
-    t.string "f_name"
-    t.string "l_name"
+    t.string "name"
     t.string "email"
     t.bigint "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -40,13 +72,19 @@ ActiveRecord::Schema.define(version: 2021_10_20_004023) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "f_name"
-    t.string "l_name"
+    t.string "user_id"
+    t.string "name"
     t.string "email"
-    t.boolean "isAdmin"
+    t.string "img_url"
+    t.string "google_token"
+    t.string "google_refresh_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_admin"
   end
 
+  add_foreign_key "blog_posts", "users"
+  add_foreign_key "comments", "blog_posts"
+  add_foreign_key "comments", "users"
   add_foreign_key "rsvps", "events"
 end

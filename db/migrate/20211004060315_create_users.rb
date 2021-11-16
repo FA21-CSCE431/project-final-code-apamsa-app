@@ -3,10 +3,12 @@
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :users do |t|
-      t.string :f_name
-      t.string :l_name
+      t.string :user_id
+      t.string :name
       t.string :email
-      t.boolean :isAdmin
+      t.string :img_url
+      t.string :google_token
+      t.string :google_refresh_token
 
       t.timestamps
     end
