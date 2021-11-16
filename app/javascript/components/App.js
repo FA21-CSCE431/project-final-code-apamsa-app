@@ -33,7 +33,7 @@ const App = () => {
         userID: response.profileObj.googleId,
         email: response.profileObj.email,
         imgURL: response.profileObj.imageUrl,
-        admin: (response.profileObj.email === "aggie_deer_slayer@tamu.edu" ? true : false)
+        admin: (response.profileObj.email === "charmi@tamu.edu" ? true : false)
       })
     );
 
