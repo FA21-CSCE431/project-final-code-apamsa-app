@@ -36,9 +36,10 @@ const BlogPosts = () => {
   const is_admin = useSelector((state) => state.user.admin);
 
   useEffect(() => {
-    axios.get('api/v1/blog_posts.json')
-    .then( resp => setPost(resp.data.data))
-    .catch( resp => console.log(resp))
+    axios
+      .get('api/v1/blog_posts.json')
+      .then( resp => setPost(resp.data.data))
+      .catch( resp => console.log(resp))
   }, [blogPosts.length])
 
   const grid = blogPosts.map( (blogPost, index) => {
@@ -77,7 +78,7 @@ const BlogPosts = () => {
 
         {/* Blog Posts */}
         <Grid>
-          {is_admin == true && (
+          {is_admin && (
             <CreatePost />
           )}
           {grid}

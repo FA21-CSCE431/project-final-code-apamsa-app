@@ -14,10 +14,6 @@ const UpcomingEvents = () => {
     .catch( resp => console.log(resp))
   }, [events.length])
 
-  // const list = events.map( item => {
-  //   return (<dt key={item.attributes.event_name}><Link to={"/events/"}>{item.attributes.event_name}{item.attributes.event_date}</Link></dt>)
-  // })
-
   const [value, setValue] = useState(new Date());
 
   function onChange(nextValue) {

@@ -33,7 +33,11 @@ const Event = ({
   img_url,
   ...props
 }) => {
-  // const [rsvped, setRsvped] = useState(false);
+  const { name, email } = {
+    name: useSelector((state) => state.user.name),
+    email: useSelector((state) => state.user.email),
+  };
+
   const [openConfirmDelete, setOpenConfirmnDelete] = useState(false);
   const [openDeleted, setOpenDeleted] = useState(false);
   const [openRsvp, setOpenRsvp] = useState(false);
@@ -45,8 +49,8 @@ const Event = ({
       .post("/api/v1/rsvps", {
         ["event_name"]: event_name,
         ["event_date"]: event_date,
-        ["name"]: useSelector((state) => state.user.name),
-        ["email"]: useSelector((state) => state.user.email),
+        ["name"]: name,
+        ["email"]: email,
         ["event"]: event_id,
       })
       .then((resp) => console.log(resp))
@@ -93,7 +97,7 @@ const Event = ({
           >
             RSVP Here
           </Button>
-          {is_admin == true && (
+          {is_admin && (
             <IconButton onClick={handleDeleteClick}>
               <DeleteIcon />
             </IconButton>

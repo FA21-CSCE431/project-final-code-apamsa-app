@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 import Calendar from "./calendar";
 
 const EventsPage = () => {
-  
   return (
     <div>
       <header>

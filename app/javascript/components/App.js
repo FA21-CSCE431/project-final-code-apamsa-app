@@ -10,23 +10,30 @@ import HeadImage from "../../assets/images/apamsa2.png";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout } from "./objects/user/userSlice";
+import { login, logout, setAdmin } from "./objects/user/userSlice";
+import { Card, CardHeader, Avatar, Button } from "@mui/material";
 
 const App = () => {
   const [profile, setProfile] = useState({});
+
+  const { name, email, img_url } = {
+    name: useSelector((state) => state.user.name),
+    email: useSelector((state) => state.user.email),
+    img_url: useSelector((state) => state.user.imgURL),
+    user_id: useSelector((state) => state.user.userID),
+  };
   const dispatch = useDispatch();
-  let name = useSelector((state) => state.user.name);
 
   const responseGoogle = (response) => {
-    console.log(response);
     console.log(response.profileObj);
+
     dispatch(
       login({
         name: response.profileObj.name,
         userID: response.profileObj.googleId,
         email: response.profileObj.email,
         imgURL: response.profileObj.imageUrl,
-        admin: false,
+        admin: (response.profileObj.email === "aggie_deer_slayer@tamu.edu" ? true : false)
       })
     );
 
@@ -36,10 +43,10 @@ const App = () => {
         ["name"]: response.profileObj.name,
         ["img_url"]: response.profileObj.imageUrl,
         ["email"]: response.profileObj.email,
+        ["is_admin"]: (response.profileObj.email === "aggie_deer_slayer@tamu.edu" ? true : false)
       })
     );
 
-    // console.log('Profile info:', profile);
     axios
       .post("/api/v1/users", profile)
       .then((resp) => console.log(resp))
@@ -58,6 +65,20 @@ const App = () => {
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
         />
+      )}
+      {name !== ""  && (
+        <Card>
+          <CardHeader 
+            avatar={<Avatar src={img_url} />} 
+            title={name} 
+            subtitle={email} 
+            action={
+              <Button variant="contained" onClick={() => dispatch(logout())}>
+                Sign Out
+              </Button>
+            }
+          />
+        </Card>
       )}
       <Router>
         <Switch>

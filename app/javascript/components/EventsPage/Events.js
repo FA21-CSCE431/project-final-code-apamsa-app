@@ -23,6 +23,8 @@ const Grid = styled.div`
 `;
 
 const Events = () => {
+  const  is_admin = useSelector((state) => state.user.admin);
+
   // Calendar
   const [dateValue, setdateValue] = useState(new Date());
   const dispatch = useDispatch();
@@ -85,9 +87,11 @@ const Events = () => {
         justifyContent="space-evenly"
         alignItems="stretch"
       >
-        {/* Blog Posts */}
+        {/* Events */}
         <Grid>
-          <CreateEvent /> {/* Only for ADMIN */}
+          {is_admin && (
+            <CreateEvent />
+          )}
           {grid}
         </Grid>
       </Stack>
