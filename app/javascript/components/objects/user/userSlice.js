@@ -25,9 +25,12 @@ export const userSlice = createSlice({
       state.imgURL = "";
       state.admin = false;
     },
+    setAdmin: (state, action) => {
+      state.admin = action.payload;
+    },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, setAdmin } = userSlice.actions;
 
 export default userSlice.reducer;

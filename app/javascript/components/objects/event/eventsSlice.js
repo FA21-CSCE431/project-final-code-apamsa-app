@@ -4,14 +4,18 @@ export const eventsSlice = createSlice({
   name: "events",
   initialState: {
     currentEvents: [],
+    updateCount: 0,
   },
   reducers: {
-    addEvent: (state, action) => {
-      state.currentEvents = [...state.currentEvents, action.payload];
+    setEvents: (state, action) => {
+      state.currentEvents = action.payload;
+    },
+    incrementCount: (state) => {
+      state.updateCount++;
     },
   },
 });
 
-export const { addEvent } = eventsSlice.actions;
+export const { setEvents, incrementCount } = eventsSlice.actions;
 
 export default eventsSlice.reducer;
