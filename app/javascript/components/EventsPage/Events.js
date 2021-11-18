@@ -24,14 +24,7 @@ const Grid = styled.div`
 
 const Events = () => {
   const  is_admin = useSelector((state) => state.user.admin);
-
-  // Calendar
-  const [dateValue, setdateValue] = useState(new Date());
   const dispatch = useDispatch();
-
-  function onChange(nextValue) {
-    setdateValue(nextValue);
-  }
 
   const events = useSelector((state) => state.events.currentEvents);
 

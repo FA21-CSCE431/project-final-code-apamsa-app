@@ -4,6 +4,12 @@ require 'rails_helper'
 
 RSpec.describe 'Api::V1::Events', type: :request do
   describe 'GET /index' do
-    pending "add some examples (or delete) #{__FILE__}"
+    before do
+      get api_v1_events_path
+    end
+
+    it 'is successful' do
+      expect(response).to have_http_status(:ok)    
+    end
   end
 end

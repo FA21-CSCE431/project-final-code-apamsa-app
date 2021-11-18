@@ -12,6 +12,8 @@ const ProfilePage = () => {
     is_admin: useSelector((state) => state.user.admin)
   };
 
+  console.log("Profile Page:", is_admin);
+
   var admin_status = (is_admin ? "Y" : "N");
 
   const [cnt, setCnt] = useState(0);
@@ -34,6 +36,13 @@ const ProfilePage = () => {
               Admin Staus: {admin_status}
             </Typography>
           </CardContent>
+        </Card>
+      )}
+      {name === "" && (
+        <Card>
+          <CardHeader
+            title="Please sign in to see your profile information"
+          />
         </Card>
       )}
 
