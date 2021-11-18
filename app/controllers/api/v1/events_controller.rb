@@ -8,11 +8,9 @@ module Api
       protect_from_forgery with: :null_session
 
       def index
-        @events = Event.all
+        events = Event.all
 
-        render json: @events
-
-        # render json: EventSerializer.new(events).serialized_json
+        render json: EventSerializer.new(events).serialized_json
       end
 
       def show
