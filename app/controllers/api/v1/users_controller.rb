@@ -24,6 +24,16 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def update
+    user = User.find_by(user_id: params[:user_id])
+
+    if user.update(user_params)
+      render json: UserSerializer.new(user).serialized_json
+    else
+      render json: { error: event.errors.messages }, status: 422
+    end
+  end
+
   private
 
   def user_params

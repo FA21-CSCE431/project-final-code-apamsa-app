@@ -12,6 +12,8 @@ const ProfilePage = () => {
     is_admin: useSelector((state) => state.user.admin)
   };
 
+  console.log("Profile Page:", is_admin);
+
   var admin_status = (is_admin ? "Y" : "N");
 
   const [cnt, setCnt] = useState(0);

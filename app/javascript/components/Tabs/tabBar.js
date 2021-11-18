@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { Tabs, Tab, Button } from "@mui/material"
 import { Link } from "react-router-dom"
 import { Fragment } from "react"
+import { useSelector } from 'react-redux'
 
 const TabBar = (props) => {
   const tabValue = props.tabValue;
+
+  const is_admin = useSelector((state) => state.user.admin);
 
   return (
     <Fragment>
@@ -14,6 +17,9 @@ const TabBar = (props) => {
         <Tab value={2} component={Link} to="/events" label="Events" />
         <Tab value={3} component={Link} to="/about" label="About Us" />
         <Tab value={4} component={Link} to="/profile" label="My Profile" />
+        {is_admin && (
+          <Tab value={5} component={Link} to="/users" label="Users List" />
+        )}
       </Tabs>
       <br/>
     </Fragment>
