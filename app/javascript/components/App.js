@@ -29,7 +29,6 @@ const App = () => {
 
   const signOut = () => {
     dispatch(logout());
-    <Link to="/home" component={HomePage} />
   }
 
   const responseGoogle = (response) => {
@@ -41,7 +40,7 @@ const App = () => {
         userID: response.profileObj.googleId,
         email: response.profileObj.email,
         imgURL: response.profileObj.imageUrl,
-        admin: (response.profileObj.email === "charmi@tamu.edu" ? true : false),
+        admin: (response.profileObj.email === "aggie_deer_slayer@tamu.edu" ? true : false),
       })
     );
 
@@ -51,20 +50,33 @@ const App = () => {
         ["name"]: response.profileObj.name,
         ["img_url"]: response.profileObj.imageUrl,
         ["email"]: response.profileObj.email,
-        ["is_admin"]: (response.profileObj.email === "charmi@tamu.edu" ? true : false),
+        ["is_admin"]: (response.profileObj.email === "aggie_deer_slayer@tamu.edu" ? true : false)
       })
     );
+
+    console.log(profile);
 
     axios
       .post("/api/v1/users", profile)
       .then((resp) => console.log(resp))
       .catch((resp) => console.log(resp));
 
+
+    // axios
+    //   .post("/api/v1/users", {
+    //     ["user_id"]: response.profileObj.googleId,
+    //     ["name"]: response.profileObj.name,
+    //     ["img_url"]: response.profileObj.imageUrl,
+    //     ["email"]: response.profileObj.email,
+    //     ["is_admin"]: (response.profileObj.email === "aggie_deer_slayer@tamu.edu" ? true : false),
+    //   })
+    //   .then((resp) => console.log(resp))
+    //   .catch((resp) => console.log(resp));
+
     const url = `/api/v1/users/${response.profileObj.googleId}`
 
     axios
       .get(url)
-      // .then((resp) => setGetAdmin(resp.data.data.attributes.is_admin))
       .then((resp) => {
         console.log("Get admin data: ", resp.data.data.attributes.is_admin);
         dispatch(setAdmin(resp.data.data.attributes.is_admin));

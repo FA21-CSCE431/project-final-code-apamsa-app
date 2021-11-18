@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   CardActions,
@@ -30,9 +30,9 @@ const User = ({
   ...props
 }) => {
 
-  const [admin_status_patch, setUserAdminStatusPatch] = useState({});
   const [admin_status, setAdminStatus] = useState(is_admin);
   const [openUpdated, setOpenUpdated] = useState(false);
+  const [readySubmit, setReadySubmit] = useState(false);
 
   const updateAdmin = () => {
     if (is_admin)
@@ -43,14 +43,13 @@ const User = ({
     {
       setAdminStatus(true);
     }
-    console.log(admin_status);
+
+    setReadySubmit(true);
   }
 
   const handleUpdateAdmin = () => {
 
     const url = `/api/v1/users/${user_id}`;
-
-    console.log(admin_status_patch);
 
     axios
       .patch(url, {["is_admin"] : admin_status})
@@ -79,10 +78,9 @@ const User = ({
               >
                 Remove admin
               </Button>
-              <Button variant="contained" onClick={handleUpdateAdmin}>
+              {/* <Button variant="contained" onClick={handleUpdateAdmin}>
                 Submit Changes
-              </Button>
-              
+              </Button> */}
             </CardActions>
           </Fragment>
         )}
@@ -96,11 +94,15 @@ const User = ({
               >
                 Make {name} admin
               </Button>
-              <Button variant="contained" onClick={handleUpdateAdmin}>
-                Submit Changes
-              </Button>
             </CardActions>
           </Fragment>
+        )}
+        {readySubmit && (
+          <CardActions>
+            <Button variant="contained" onClick={handleUpdateAdmin}>
+              Submit Changes
+            </Button>
+          </CardActions>
         )}
       </Paper>
       <Dialog
