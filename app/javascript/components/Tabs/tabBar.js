@@ -17,8 +17,9 @@ const TabBar = (props) => {
         <Tab value={2} component={Link} to="/events" label="Events" />
         <Tab value={3} component={Link} to="/about" label="About Us" />
         <Tab value={4} component={Link} to="/profile" label="My Profile" />
+        <Tab value={5} component={Link} to="/help" label="Help" />
         {is_admin && (
-          <Tab value={5} component={Link} to="/users" label="Users List" />
+          <Tab value={6} component={Link} to="/users" label="Users List" />
         )}
       </Tabs>
       <br/>

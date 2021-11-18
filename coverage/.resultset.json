@@ -10,11 +10,17 @@
           1,
           1,
           1,
+          2,
+          null,
+          null,
+          1,
           1,
           null,
           null,
           1,
           1,
+          1,
+          null,
           null,
           null,
           null
@@ -770,11 +776,9 @@
           1,
           null,
           1,
-          1,
+          2,
           null,
-          1,
-          null,
-          null,
+          2,
           null,
           null,
           1,
@@ -862,8 +866,20 @@
           1,
           null
         ]
+      },
+      "/csce431/app/serializers/event_serializer.rb": {
+        "lines": [
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null
+        ]
       }
     },
-    "timestamp": 1637203837
+    "timestamp": 1637207199
   }
 }

@@ -7,7 +7,7 @@ const ShowUsers = () => {
   return (
     <div>
       <header>
-        <TabBar tabValue={5} />
+        <TabBar tabValue={6} />
       </header>
       <Stack spacing={20} direction="row" justifyContent="space-evenly">
         <Users/>

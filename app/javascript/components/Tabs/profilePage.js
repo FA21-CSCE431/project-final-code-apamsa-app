@@ -38,6 +38,13 @@ const ProfilePage = () => {
           </CardContent>
         </Card>
       )}
+      {name === "" && (
+        <Card>
+          <CardHeader
+            title="Please sign in to see your profile information"
+          />
+        </Card>
+      )}
 
       {/* {is_admin && (
         <Card>
