@@ -9,11 +9,11 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 user = User.create([
-  {
-    name: "James Streets",
-    email: "aggie_deer_slayer@tamu.edu",
-    user_id: "113457417171360978166",
-    img_url: "https://lh3.googleusercontent.com/a/AATXAJzZUZF9B-uNVguQp8leWrwi8XtoN9_Ean-0aQqo=s96-c",
-    is_admin: true,
-  },
-])
+                     {
+                       name: 'James Streets',
+                       email: 'aggie_deer_slayer@tamu.edu',
+                       google_id: '113457417171360978166',
+                       img_url: 'https://lh3.googleusercontent.com/a/AATXAJzZUZF9B-uNVguQp8leWrwi8XtoN9_Ean-0aQqo=s96-c',
+                       is_admin: true
+                     }
+                   ])

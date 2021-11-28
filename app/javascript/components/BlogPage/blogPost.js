@@ -1,22 +1,89 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { TextField, Button } from "@mui/material";
-import {  CardActions, CardHeader, CardContent, 
-  Paper, Typography, IconButton, Dialog, 
-  DialogTitle, DialogActions,
-  AlertTitle, Alert }  from "@mui/material"
+import { styled as style} from '@mui/material/styles';
+import {  
+  Button,
+  CardActions, 
+  CardHeader, 
+  CardContent, 
+  Paper, 
+  Typography, 
+  IconButton, 
+  Dialog, 
+  DialogTitle, 
+  DialogActions, 
+  Alert, 
+  Avatar,
+  Collapse,
+  ToggleButton,
+  TextField,
+  Stack,
+}  from "@mui/material"
 import LinkIcon from '@mui/icons-material/Link';
 import SendSharpIcon from "@mui/icons-material/SendSharp"
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
+import CreateIcon from '@mui/icons-material/Create'
 import axios from "axios";
+import CreateComment from "./createComment"
+import Comments from "./showComments"
+import { setComments, incrementCount } from "../objects/comment/commentSlice";
 
 
-const BlogPost = ({title, description, link, canComment, slug, ...props}) => {
+const ExpandMore = style((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+const BlogPost = ({
+  title, 
+  description, 
+  link, 
+  canComment, 
+  slug, 
+  google_id, 
+  synopsis,
+  blog_post_id,
+  ...props}) => {
 
   const [openConfirmDelete, setOpenConfirmnDelete] = useState(false);
   const [openDeleted, setOpenDeleted] = useState(false);
+  const [avatar_url, setAvatarUrl] = useState("");
+  const [user_name, setUserName] = useState("");
+  const [expanded, setExpanded] = useState(false);
+  const [selected, setSelected] = useState(false);
+  const [blog_post, setPost] = useState({});
+  const [successful_post, setSuccessfulPost] = useState(false);
+  const [bad_post, setBadPost] = useState(false);
   const is_admin = useSelector((state) => state.user.admin);
+
+  if (user_name == "")
+  {
+    axios
+      .get(`api/v1/users/${google_id}`)
+      .then( resp => {
+        setUserName(resp.data.data.attributes.name);
+        setAvatarUrl(resp.data.data.attributes.img_url);
+      })
+      .catch( resp => console.log(resp) )
+  }
+
+  var commentsDisabled;
+  if (selected) 
+  {
+    commentsDisabled = <CheckBoxIcon />;
+  } 
+  else 
+  {
+    commentsDisabled = <CheckBoxOutlineBlankIcon />;
+  }
 
   const handleDeleteClick = () => {
     setOpenConfirmnDelete(true)
@@ -24,76 +91,225 @@ const BlogPost = ({title, description, link, canComment, slug, ...props}) => {
 
 
   const handleConfirmDelete = () => {
-    const url = `/api/v1/blog_posts/${slug}`
-
-    axios.delete(url)
-    .then( resp => console.log(resp) )
-    .catch( resp => console.log(resp) )
+    axios
+      .delete(`/api/v1/blog_posts/${slug}`)
+      .then( resp => console.log(resp) )
+      .catch( resp => console.log(resp) )
 
     setOpenDeleted(true)
     setOpenConfirmnDelete(false)
   };
 
-  var commentComponent;
-  if (canComment)
-  {
-    commentComponent = (
-      <Fragment>
-        <CardContent>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-multiline-static"
-            label="Comment"
-            multiline
-            rows={4}
-            defaultValue="Enter your reply here"
-            disabled={!canComment}
-          />
-        </CardContent>
-        <CardActions>
-          <Button variant="contained" endIcon={<SendSharpIcon />} size="small">Submit</Button> 
-        </CardActions>
-      </Fragment>
-    )
-  }
-  else
-  {
-    commentComponent = ( 
-      <Fragment>
-        <CardContent>
-          <Typography paragraph color='text.secondary'>
-            Comments disabled for this post
-          </Typography>
-        </CardContent>
-      </Fragment>
-    )
-  }
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault()
+
+    setPost(Object.assign({}, blog_post, {[e.target.name]: e.target.value}))
+  };
+
+  const handleDisableComments = () => {
+    setSelected(!selected);
+
+    setPost(Object.assign(blog_post, blog_post, {["canComment"]: selected}))
+  };
+
+  const handleSubmitPost = () => {
+
+    const csrfToken = document.querySelector('[name=csrf-token]').content
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+    setPost(Object.assign(blog_post, blog_post, {["user_id"]: user_id, ["google_id"]: google_id}))
+
+    axios.patch(`/api/v1/blog_posts/${slug}`, {blog_post})
+    .then(resp => {
+      setPost({title: '', link: '', description: ''})
+      setSelected(false);
+      setSuccessfulPost(true);
+      setExpanded(false);
+      console.log("Blog Post: ", resp);
+    })
+    .catch(resp => {
+      setBadPost(true);
+      console.log("Error: ", resp);
+    })
+  };
 
   return (
     <div>
-      <Paper>
+      <Paper sx={{
+        minWidth: 500
+      }}
+      >
         <CardHeader 
           title={title}
+          avatar={<Avatar src={avatar_url} />}
+          subheader={user_name}
+          action={
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <Button variant='contained' endIcon={<CreateIcon />}>
+                Edit Post
+              </Button>
+            </ExpandMore>
+          }
         />
         <CardContent>
+          <Typography variant="subtitle1">
+            {synopsis}
+          </Typography>
           <Typography paragraph>
             {description}
           </Typography>
         </CardContent>
         <CardActions>
-          <IconButton aria-label="Link to" href={link}>
-            <LinkIcon />
-          </IconButton>
-          {is_admin == true && (
-            <IconButton onClick={handleDeleteClick}>
-              <DeleteIcon /> 
+          {link != null && (
+            <IconButton aria-label="Link to" href={link}>
+              <LinkIcon />
             </IconButton>
           )}
+          {is_admin == true && (
+            <Fragment>
+              <IconButton onClick={handleDeleteClick}>
+                <DeleteIcon /> 
+              </IconButton>
+            </Fragment>
+          )}
         </CardActions>
-        {commentComponent}
-      </Paper>
+        {/* Expand To Edit Post */}
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardActions>
+            <TextField
+              id="outlined-textarea"
+              label="Title"
+              placeholder="Title"
+              onChange={handleChange}
+              value={blog_post.title}
+              name="title"
+              multiline
+            />
+            <TextField
+              id="outlined-textarea"
+              label="Link"
+              placeholder="Link"
+              onChange={handleChange}
+              value={blog_post.link}
+              name="link"
 
+              multiline
+            />
+          </CardActions>
+          <CardActions>
+            <TextField
+                id="outlined-textarea"
+                label="Summary"
+                placeholder="Summary"
+                onChange={handleChange}
+                value={blog_post.synopsis}
+                name="synopsis"
+
+                multiline
+              />
+          </CardActions>
+          <CardActions>
+            <TextField
+                id="outlined-multiline-static"
+                label="Description"
+                multiline
+                onChange={handleChange}
+                value={blog_post.description}
+                name="description"
+
+                rows={4}
+              />
+          </CardActions>
+          <CardActions>
+            <Typography paragraph>
+              Disable comments?  
+            </Typography>
+            <ToggleButton
+              onChange={handleDisableComments}
+              name="canComment"
+              selected={selected}
+              value={0}
+            >
+              {commentsDisabled}
+            </ToggleButton>
+          </CardActions>
+          <CardHeader action={
+              <Button variant="contained" onClick={handleSubmitPost}>
+                Post
+              </Button>
+            }
+          />
+        </Collapse>
+        {canComment ? (
+          <Fragment>
+            <Stack spacing={5} direction="column">
+              <CreateComment
+                blog_post_id={blog_post_id}
+              />
+              <Comments
+                slug={slug} 
+              />
+            </Stack>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <CardContent>
+              <Typography paragraph color='text.secondary'>
+                Comments disabled for this post
+              </Typography>
+            </CardContent>
+          </Fragment>
+        )}
+      </Paper>
+        {/* Successful Post */}
+        <Dialog
+        open={successful_post}
+        onClose={() => {
+          setSuccessfulPost(false);
+        }}
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Alert>Post was successfully edited!</Alert>
+        </DialogTitle>
+        <DialogActions>
+          <IconButton
+            onClick={() => {
+              setSuccessfulPost(false);
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
+      </Dialog>
+      {/* Bad Post */}
+      <Dialog
+        open={bad_post}
+        onClose={() => {
+          setBadPost(false);
+        }}
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Alert>Uh oh something went wrong with editing the post!</Alert>
+        </DialogTitle>
+        <DialogActions>
+          <IconButton
+            onClick={() => {
+              setBadPost(false);
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={openConfirmDelete}
         onClose={() => {setOpenConfirmnDelete(false)}}

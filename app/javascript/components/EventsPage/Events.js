@@ -73,11 +73,10 @@ const Events = () => {
   });
 
   return (
-    <div style={{ margin: "5px 15px 10px" }}>
+    <div>
       <Stack
         spacing={10}
         direction="row"
-        justifyContent="space-evenly"
         alignItems="stretch"
       >
         {/* Events */}

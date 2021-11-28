@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import TabBar from "./tabBar";
+import { Stack } from "@mui/material";
 import BlogPosts from "../BlogPage/showBlogPosts";
+import Calendar from "./calendar";
 
 const BlogPage = () => {
-
   return (
     <div>
       <header>
         <TabBar tabValue={1} />
       </header>
-      
-      <BlogPosts />
+      <Stack spacing={10} direction="row" justifyContent="space-evenly">
+        <Calendar />
+        <BlogPosts />
+      </Stack>
     </div>
   );
 };

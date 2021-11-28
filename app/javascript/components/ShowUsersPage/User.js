@@ -22,7 +22,7 @@ import axios from "axios";
 
 const User = ({
   user_index,
-  user_id,
+  google_id,
   name,
   email,
   img_url,

@@ -7,6 +7,12 @@ module Api
 
       protect_from_forgery with: :null_session
 
+      def index
+        rsvps = Rsvp.all
+
+        render json: RsvpSerializer.new(rsvps).serialized_json
+      end
+
       def create
         rsvp = Rsvp.new(rsvp_params)
 
@@ -40,7 +46,7 @@ module Api
       private
 
       def rsvp_params
-        params.require(:rsvp).permit(:event_name, :event_date, :name, :email, :event_id)
+        params.require(:rsvp).permit(:event_name, :event_date, :name, :email, :event_id, :user_id)
       end
     end
   end
