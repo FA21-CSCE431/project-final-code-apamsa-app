@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Comment from './comment'
-import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux';
-import { setComments, incrementCounter } from '../objects/comment/commentSlice';
-import { Stack } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import Comment from "./comment";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setComments, incrementCounter } from "../objects/comment/commentSlice";
+import { Stack } from "@mui/material";
 
-const Grid =  styled.div`
+const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   grid-gap: 20px;
@@ -19,21 +19,24 @@ const Grid =  styled.div`
     border-radius: 5px;
     padding: 20px;
   }
-`
+`;
 
 const Comments = (props) => {
-
   const dispatch = useDispatch();
-  const comments = useSelector((state) => state.comments.currentComments);
+  const comments = useSelector((state) =>
+    state.comments.currentComments.filter(
+      (comment) => comment.attributes.blog_post_id == props.id
+    )
+  );
 
   const getComments = () => {
     console.log("Slug:", props.slug);
 
     axios
-      .get(`/api/v1/blog_posts/${props.slug}`)
+      .get(`/api/v1/comments`)
       .then((resp) => {
-        console.log("Commens in axios:", resp.data.included);
-        dispatch(setComments(resp.data.included));
+        console.log("Commens in axios:", resp.data.data);
+        dispatch(setComments(resp.data.data));
       })
       .catch((resp) => console.log(resp));
   };
@@ -46,14 +49,15 @@ const Comments = (props) => {
 
   console.log("Comments array:", comments);
 
-  const commentList = comments.map( (item, index) => {
-
-    const { blog_post_id,
+  const commentList = comments.map((item, index) => {
+    const {
+      blog_post_id,
       created_at,
       description,
       google_id,
       updated_at,
-      user_id, } = item.attributes
+      user_id,
+    } = item.attributes;
 
     return (
       <Comment
@@ -62,14 +66,14 @@ const Comments = (props) => {
         description={description}
         google_id={google_id}
       />
-    )
-  })
+    );
+  });
 
   return (
     <Stack spacing={1} direction="column">
       {commentList}
     </Stack>
-  )
-}
+  );
+};
 
-export default Comments
+export default Comments;

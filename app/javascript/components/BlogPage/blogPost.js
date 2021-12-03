@@ -1,59 +1,58 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { styled as style} from '@mui/material/styles';
-import {  
+import { styled as style } from "@mui/material/styles";
+import {
   Button,
-  CardActions, 
-  CardHeader, 
-  CardContent, 
-  Paper, 
-  Typography, 
-  IconButton, 
-  Dialog, 
-  DialogTitle, 
-  DialogActions, 
-  Alert, 
+  CardActions,
+  CardHeader,
+  CardContent,
+  Paper,
+  Typography,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Alert,
   Avatar,
   Collapse,
   ToggleButton,
   TextField,
   Stack,
-}  from "@mui/material"
-import LinkIcon from '@mui/icons-material/Link';
-import SendSharpIcon from "@mui/icons-material/SendSharp"
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import DeleteIcon from '@mui/icons-material/Delete'
-import CloseIcon from '@mui/icons-material/Close'
-import CreateIcon from '@mui/icons-material/Create'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+} from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
+import SendSharpIcon from "@mui/icons-material/SendSharp";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
+import CreateIcon from "@mui/icons-material/Create";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
-import CreateComment from "./createComment"
-import Comments from "./showComments"
+import CreateComment from "./createComment";
+import Comments from "./showComments";
 import { setComments, incrementCount } from "../objects/comment/commentSlice";
-
 
 const ExpandMore = style((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
 }));
 
 const BlogPost = ({
-  title, 
-  description, 
-  link, 
-  canComment, 
-  slug, 
-  google_id, 
+  title,
+  description,
+  link,
+  canComment,
+  slug,
+  google_id,
   synopsis,
   blog_post_id,
-  ...props}) => {
-
+  ...props
+}) => {
   const [openConfirmDelete, setOpenConfirmnDelete] = useState(false);
   const [openDeleted, setOpenDeleted] = useState(false);
   const [avatar_url, setAvatarUrl] = useState("");
@@ -67,40 +66,35 @@ const BlogPost = ({
   const is_admin = useSelector((state) => state.user.admin);
   const user_id = useSelector((state) => state.user.userID);
 
-  if (user_name == "")
-  {
+  if (user_name == "") {
     axios
       .get(`api/v1/users/${google_id}`)
-      .then( resp => {
+      .then((resp) => {
         setUserName(resp.data.data.attributes.name);
         setAvatarUrl(resp.data.data.attributes.img_url);
       })
-      .catch( resp => console.log(resp) )
+      .catch((resp) => console.log(resp));
   }
 
   var commentsDisabled;
-  if (selected) 
-  {
+  if (selected) {
     commentsDisabled = <CheckBoxIcon />;
-  } 
-  else 
-  {
+  } else {
     commentsDisabled = <CheckBoxOutlineBlankIcon />;
   }
 
   const handleDeleteClick = () => {
-    setOpenConfirmnDelete(true)
+    setOpenConfirmnDelete(true);
   };
-
 
   const handleConfirmDelete = () => {
     axios
       .delete(`/api/v1/blog_posts/${slug}`)
-      .then( resp => console.log(resp) )
-      .catch( resp => console.log(resp) )
+      .then((resp) => console.log(resp))
+      .catch((resp) => console.log(resp));
 
-    setOpenDeleted(true)
-    setOpenConfirmnDelete(false)
+    setOpenDeleted(true);
+    setOpenConfirmnDelete(false);
   };
 
   const handleExpandClick = () => {
@@ -108,55 +102,67 @@ const BlogPost = ({
   };
 
   const handleChange = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    setPost(Object.assign({}, blog_post, {[e.target.name]: e.target.value}))
+    setPost(Object.assign({}, blog_post, { [e.target.name]: e.target.value }));
   };
 
   const handleDisableComments = () => {
     setSelected(!selected);
 
-    setPost(Object.assign(blog_post, blog_post, {["canComment"]: selected}))
+    setPost(Object.assign(blog_post, blog_post, { ["canComment"]: selected }));
   };
 
   const handleSubmitPost = () => {
+    const csrfToken = document.querySelector("[name=csrf-token]").content;
+    axios.defaults.headers.common["X-CSRF-TOKEN"] = csrfToken;
 
-    const csrfToken = document.querySelector('[name=csrf-token]').content
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+    setPost(
+      Object.assign(blog_post, blog_post, {
+        ["user_id"]: user_id,
+        ["google_id"]: google_id,
+      })
+    );
 
-    setPost(Object.assign(blog_post, blog_post, {["user_id"]: user_id, ["google_id"]: google_id}))
-
-    axios.patch(`/api/v1/blog_posts/${slug}`, {blog_post})
-    .then(resp => {
-      setPost({title: '', link: '', description: ''})
-      setSelected(false);
-      setSuccessfulPost(true);
-      setExpanded(false);
-      console.log("Blog Post: ", resp);
-    })
-    .catch(resp => {
-      setBadPost(true);
-      console.log("Error: ", resp);
-    })
+    axios
+      .patch(`/api/v1/blog_posts/${slug}`, { blog_post })
+      .then((resp) => {
+        setPost({ title: "", link: "", description: "" });
+        setSelected(false);
+        setSuccessfulPost(true);
+        setExpanded(false);
+        console.log("Blog Post: ", resp);
+      })
+      .catch((resp) => {
+        setBadPost(true);
+        console.log("Error: ", resp);
+      });
   };
 
   return (
     <div>
-      <Paper sx={{
-          minWidth: 500
+      <Paper
+        sx={{
+          minWidth: 500,
         }}
       >
         <CardHeader
           title={title}
           subheader={user_name}
           action={
-            <Button variant="text" onClick={() => {setOpenBlog(true)}}> Show More </Button>
+            <Button
+              variant="text"
+              onClick={() => {
+                setOpenBlog(true);
+              }}
+            >
+              {" "}
+              Show More{" "}
+            </Button>
           }
         />
         <CardContent>
-          <Typography variant="subtitle1">
-            Summary: {synopsis}
-          </Typography>
+          <Typography variant="subtitle1">Summary: {synopsis}</Typography>
         </CardContent>
       </Paper>
       {/* <Paper sx={{
@@ -205,7 +211,7 @@ const BlogPost = ({
           )}
         </CardActions>
         {/* Expand To Edit Post */}
-        {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
+      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardActions>
             <TextField
               id="outlined-textarea"
@@ -292,7 +298,7 @@ const BlogPost = ({
           </Fragment>
         )}
       </Paper> */}
-        {/* Successful Post */}
+      {/* Successful Post */}
       <Dialog
         open={successful_post}
         onClose={() => {
@@ -334,53 +340,69 @@ const BlogPost = ({
       </Dialog>
       <Dialog
         open={openConfirmDelete}
-        onClose={() => {setOpenConfirmnDelete(false)}}
+        onClose={() => {
+          setOpenConfirmnDelete(false);
+        }}
       >
-        <DialogTitle>
-          {`Are you sure you want to delete ${title}`}
-        </DialogTitle>
+        <DialogTitle>{`Are you sure you want to delete ${title}`}</DialogTitle>
         <DialogActions>
-          <Button variant='contained' onClick={handleConfirmDelete}>
+          <Button variant="contained" onClick={handleConfirmDelete}>
             Yes
           </Button>
-          <Button variant='contained' onClick={() => {setOpenConfirmnDelete(false)}}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setOpenConfirmnDelete(false);
+            }}
+          >
             No
           </Button>
         </DialogActions>
       </Dialog>
       <Dialog
         open={openDeleted}
-        onClose={() => {setOpenDeleted(false)}}
+        onClose={() => {
+          setOpenDeleted(false);
+        }}
       >
-        <DialogTitle id='alert-dialog-title'>
-          <Alert>
-            {title} was successfully deleted! 
-          </Alert>
+        <DialogTitle id="alert-dialog-title">
+          <Alert>{title} was successfully deleted!</Alert>
         </DialogTitle>
         <DialogActions>
-          <IconButton onClick={() => {setOpenDeleted(false)}}>
+          <IconButton
+            onClick={() => {
+              setOpenDeleted(false);
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </DialogActions>
-      </Dialog> 
+      </Dialog>
       <Dialog
         scroll="paper"
         fullWidth={true}
         maxWidth="xl"
         open={openBlog}
-        onClose={() => {setOpenBlog(false)}}
+        onClose={() => {
+          setOpenBlog(false);
+        }}
       >
         <DialogActions>
-          <IconButton onClick={() => {setOpenBlog(false)}}>
+          <IconButton
+            onClick={() => {
+              setOpenBlog(false);
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </DialogActions>
-        <DialogTitle id='alert-dialog-title'>
-          <Paper sx={{
-            minWidth: 500
-          }}
+        <DialogTitle id="alert-dialog-title">
+          <Paper
+            sx={{
+              minWidth: 500,
+            }}
           >
-            <CardHeader 
+            <CardHeader
               title={title}
               avatar={<Avatar src={avatar_url} />}
               subheader={user_name}
@@ -392,7 +414,7 @@ const BlogPost = ({
                   aria-label="show more"
                 >
                   {is_admin && (
-                    <Button variant='contained' endIcon={<CreateIcon />}>
+                    <Button variant="contained" endIcon={<CreateIcon />}>
                       Edit Post
                     </Button>
                   )}
@@ -400,12 +422,8 @@ const BlogPost = ({
               }
             />
             <CardContent>
-              <Typography variant="subtitle1">
-                {synopsis}
-              </Typography>
-              <Typography paragraph>
-                {description}
-              </Typography>
+              <Typography variant="subtitle1">{synopsis}</Typography>
+              <Typography paragraph>{description}</Typography>
             </CardContent>
             <CardActions>
               {link != null && (
@@ -416,7 +434,7 @@ const BlogPost = ({
               {is_admin == true && (
                 <Fragment>
                   <IconButton onClick={handleDeleteClick}>
-                    <DeleteIcon /> 
+                    <DeleteIcon />
                   </IconButton>
                 </Fragment>
               )}
@@ -440,38 +458,33 @@ const BlogPost = ({
                   onChange={handleChange}
                   value={blog_post.link}
                   name="link"
-
                   multiline
                 />
               </CardActions>
               <CardActions>
                 <TextField
-                    id="outlined-textarea"
-                    label="Summary"
-                    placeholder="Summary"
-                    onChange={handleChange}
-                    value={blog_post.synopsis}
-                    name="synopsis"
-
-                    multiline
-                  />
+                  id="outlined-textarea"
+                  label="Summary"
+                  placeholder="Summary"
+                  onChange={handleChange}
+                  value={blog_post.synopsis}
+                  name="synopsis"
+                  multiline
+                />
               </CardActions>
               <CardActions>
                 <TextField
-                    id="outlined-multiline-static"
-                    label="Description"
-                    multiline
-                    onChange={handleChange}
-                    value={blog_post.description}
-                    name="description"
-
-                    rows={4}
-                  />
+                  id="outlined-multiline-static"
+                  label="Description"
+                  multiline
+                  onChange={handleChange}
+                  value={blog_post.description}
+                  name="description"
+                  rows={4}
+                />
               </CardActions>
               <CardActions>
-                <Typography paragraph>
-                  Disable comments?  
-                </Typography>
+                <Typography paragraph>Disable comments?</Typography>
                 <ToggleButton
                   onChange={handleDisableComments}
                   name="canComment"
@@ -481,7 +494,8 @@ const BlogPost = ({
                   {commentsDisabled}
                 </ToggleButton>
               </CardActions>
-              <CardHeader action={
+              <CardHeader
+                action={
                   <Button variant="contained" onClick={handleSubmitPost}>
                     Post
                   </Button>
@@ -491,18 +505,14 @@ const BlogPost = ({
             {canComment ? (
               <Fragment>
                 <Stack spacing={5} direction="column">
-                  <CreateComment
-                    blog_post_id={blog_post_id}
-                  />
-                  <Comments
-                    slug={slug} 
-                  />
+                  <CreateComment blog_post_id={blog_post_id} />
+                  <Comments slug={slug} id={blog_post_id} />
                 </Stack>
               </Fragment>
             ) : (
               <Fragment>
                 <CardContent>
-                  <Typography paragraph color='text.secondary'>
+                  <Typography paragraph color="text.secondary">
                     Comments disabled for this post
                   </Typography>
                 </CardContent>
@@ -510,9 +520,9 @@ const BlogPost = ({
             )}
           </Paper>
         </DialogTitle>
-      </Dialog>  
+      </Dialog>
     </div>
-  )
-} 
+  );
+};
 
-export default BlogPost
+export default BlogPost;
