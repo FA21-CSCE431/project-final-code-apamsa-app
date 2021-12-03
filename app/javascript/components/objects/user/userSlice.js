@@ -28,14 +28,14 @@ export const userSlice = createSlice({
       state.admin = false;
       state.userID = "";
     },
-    
+
     setAdmin: (state, action) => {
       state.admin = action.payload;
     },
 
     setUserId: (state, action) => {
       state.userID = action.payload;
-    }
+    },
   },
 });
 
