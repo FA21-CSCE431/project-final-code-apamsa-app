@@ -44,6 +44,7 @@ const CreatePost = () => {
 
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState(false);
+  const [canComment, setCanComment] = useState(true);
   const [blog_post, setPost] = useState({});
   const [user_id, setUserID] = useState(0);
   const [successful_post, setSuccessfulPost] = useState(false);
@@ -81,7 +82,7 @@ const CreatePost = () => {
     const csrfToken = document.querySelector('[name=csrf-token]').content
     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
-    setPost(Object.assign(blog_post, blog_post, {["user_id"]: user_id, ["google_id"]: google_id}))
+    setPost(Object.assign(blog_post, blog_post, {["user_id"]: user_id, ["google_id"]: google_id, ["canComment"]: canComment}));
 
     axios.post('/api/v1/blog_posts', {blog_post})
     .then(resp => {
@@ -105,9 +106,7 @@ const CreatePost = () => {
 
   const handleDisableComments = () => {
     setSelected(!selected);
-
-    setPost(Object.assign(blog_post, blog_post, {["canComment"]: selected}))
-    console.log("Disabled:", selected);
+    setCanComment(!canComment);
   };
 
   return (

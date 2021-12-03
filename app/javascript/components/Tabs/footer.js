@@ -12,7 +12,7 @@ const Footer = () => {
         height: "100vh",
       }}
     >
-      <Stack spacing={2}>
+      <Stack spacing={2} direction="row">
         <SocialIcon network="facebook" url="https://business.facebook.com/TAMU.APAMSA/" />
         <SocialIcon network="instagram" url="https://www.instagram.com/tamucomapamsa/" />
         <SocialIcon network="mailto" url="mailto:apamsa.tamucom@gmail.com" />

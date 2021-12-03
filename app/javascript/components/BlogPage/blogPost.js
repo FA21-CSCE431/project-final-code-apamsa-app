@@ -26,6 +26,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import DeleteIcon from '@mui/icons-material/Delete'
 import CloseIcon from '@mui/icons-material/Close'
 import CreateIcon from '@mui/icons-material/Create'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import axios from "axios";
 import CreateComment from "./createComment"
 import Comments from "./showComments"
@@ -62,7 +63,9 @@ const BlogPost = ({
   const [blog_post, setPost] = useState({});
   const [successful_post, setSuccessfulPost] = useState(false);
   const [bad_post, setBadPost] = useState(false);
+  const [openBlog, setOpenBlog] = useState(false);
   const is_admin = useSelector((state) => state.user.admin);
+  const user_id = useSelector((state) => state.user.userID);
 
   if (user_name == "")
   {
@@ -140,6 +143,23 @@ const BlogPost = ({
   return (
     <div>
       <Paper sx={{
+          minWidth: 500
+        }}
+      >
+        <CardHeader
+          title={title}
+          subheader={user_name}
+          action={
+            <Button variant="text" onClick={() => {setOpenBlog(true)}}> Show More </Button>
+          }
+        />
+        <CardContent>
+          <Typography variant="subtitle1">
+            Summary: {synopsis}
+          </Typography>
+        </CardContent>
+      </Paper>
+      {/* <Paper sx={{
         minWidth: 500
       }}
       >
@@ -154,9 +174,11 @@ const BlogPost = ({
               aria-expanded={expanded}
               aria-label="show more"
             >
-              <Button variant='contained' endIcon={<CreateIcon />}>
-                Edit Post
-              </Button>
+              {is_admin && (
+                <Button variant='contained' endIcon={<CreateIcon />}>
+                  Edit Post
+                </Button>
+              )}
             </ExpandMore>
           }
         />
@@ -183,7 +205,7 @@ const BlogPost = ({
           )}
         </CardActions>
         {/* Expand To Edit Post */}
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
+        {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardActions>
             <TextField
               id="outlined-textarea"
@@ -269,9 +291,9 @@ const BlogPost = ({
             </CardContent>
           </Fragment>
         )}
-      </Paper>
+      </Paper> */}
         {/* Successful Post */}
-        <Dialog
+      <Dialog
         open={successful_post}
         onClose={() => {
           setSuccessfulPost(false);
@@ -340,7 +362,155 @@ const BlogPost = ({
             <CloseIcon />
           </IconButton>
         </DialogActions>
-      </Dialog>      
+      </Dialog> 
+      <Dialog
+        scroll="paper"
+        fullWidth={true}
+        maxWidth="xl"
+        open={openBlog}
+        onClose={() => {setOpenBlog(false)}}
+      >
+        <DialogActions>
+          <IconButton onClick={() => {setOpenBlog(false)}}>
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
+        <DialogTitle id='alert-dialog-title'>
+          <Paper sx={{
+            minWidth: 500
+          }}
+          >
+            <CardHeader 
+              title={title}
+              avatar={<Avatar src={avatar_url} />}
+              subheader={user_name}
+              action={
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  {is_admin && (
+                    <Button variant='contained' endIcon={<CreateIcon />}>
+                      Edit Post
+                    </Button>
+                  )}
+                </ExpandMore>
+              }
+            />
+            <CardContent>
+              <Typography variant="subtitle1">
+                {synopsis}
+              </Typography>
+              <Typography paragraph>
+                {description}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              {link != null && (
+                <IconButton aria-label="Link to" href={link}>
+                  <LinkIcon />
+                </IconButton>
+              )}
+              {is_admin == true && (
+                <Fragment>
+                  <IconButton onClick={handleDeleteClick}>
+                    <DeleteIcon /> 
+                  </IconButton>
+                </Fragment>
+              )}
+            </CardActions>
+            {/* Expand To Edit Post */}
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardActions>
+                <TextField
+                  id="outlined-textarea"
+                  label="Title"
+                  placeholder="Title"
+                  onChange={handleChange}
+                  value={blog_post.title}
+                  name="title"
+                  multiline
+                />
+                <TextField
+                  id="outlined-textarea"
+                  label="Link"
+                  placeholder="Link"
+                  onChange={handleChange}
+                  value={blog_post.link}
+                  name="link"
+
+                  multiline
+                />
+              </CardActions>
+              <CardActions>
+                <TextField
+                    id="outlined-textarea"
+                    label="Summary"
+                    placeholder="Summary"
+                    onChange={handleChange}
+                    value={blog_post.synopsis}
+                    name="synopsis"
+
+                    multiline
+                  />
+              </CardActions>
+              <CardActions>
+                <TextField
+                    id="outlined-multiline-static"
+                    label="Description"
+                    multiline
+                    onChange={handleChange}
+                    value={blog_post.description}
+                    name="description"
+
+                    rows={4}
+                  />
+              </CardActions>
+              <CardActions>
+                <Typography paragraph>
+                  Disable comments?  
+                </Typography>
+                <ToggleButton
+                  onChange={handleDisableComments}
+                  name="canComment"
+                  selected={selected}
+                  value={0}
+                >
+                  {commentsDisabled}
+                </ToggleButton>
+              </CardActions>
+              <CardHeader action={
+                  <Button variant="contained" onClick={handleSubmitPost}>
+                    Post
+                  </Button>
+                }
+              />
+            </Collapse>
+            {canComment ? (
+              <Fragment>
+                <Stack spacing={5} direction="column">
+                  <CreateComment
+                    blog_post_id={blog_post_id}
+                  />
+                  <Comments
+                    slug={slug} 
+                  />
+                </Stack>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <CardContent>
+                  <Typography paragraph color='text.secondary'>
+                    Comments disabled for this post
+                  </Typography>
+                </CardContent>
+              </Fragment>
+            )}
+          </Paper>
+        </DialogTitle>
+      </Dialog>  
     </div>
   )
 } 

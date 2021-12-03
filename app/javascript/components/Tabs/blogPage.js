@@ -10,7 +10,7 @@ const BlogPage = () => {
       <header>
         <TabBar tabValue={1} />
       </header>
-      <Stack spacing={10} direction="row" justifyContent="space-evenly">
+      <Stack spacing={10} direction="row" justifyContent="space-between">
         <Calendar />
         <BlogPosts />
       </Stack>

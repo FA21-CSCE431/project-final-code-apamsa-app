@@ -49,7 +49,7 @@ const User = ({
 
   const handleUpdateAdmin = () => {
 
-    const url = `/api/v1/users/${user_id}`;
+    const url = `/api/v1/users/${google_id}`;
 
     axios
       .patch(url, {["is_admin"] : admin_status})
@@ -78,9 +78,6 @@ const User = ({
               >
                 Remove admin
               </Button>
-              {/* <Button variant="contained" onClick={handleUpdateAdmin}>
-                Submit Changes
-              </Button> */}
             </CardActions>
           </Fragment>
         )}
