@@ -9,6 +9,7 @@ export const userSlice = createSlice({
     imgURL: "",
     admin: false,
     userID: "",
+    prizesWon: 0,
   },
   reducers: {
     login: (state, action) => {
@@ -18,6 +19,7 @@ export const userSlice = createSlice({
       state.imgURL = action.payload.imgURL;
       state.admin = action.payload.admin;
       state.userID = action.payload.userID;
+      state.prizesWon = action.payload.prizeWon;
     },
 
     logout: (state) => {
@@ -27,6 +29,7 @@ export const userSlice = createSlice({
       state.imgURL = "";
       state.admin = false;
       state.userID = "";
+      state.prizesWon = 0;
     },
 
     setAdmin: (state, action) => {
@@ -36,9 +39,13 @@ export const userSlice = createSlice({
     setUserId: (state, action) => {
       state.userID = action.payload;
     },
+
+    setPrizesWon: (state, action) => {
+      state.prizeWon = action.payload;
+    }
   },
 });
 
-export const { login, logout, setAdmin, setUserId } = userSlice.actions;
+export const { login, logout, setAdmin, setUserId, setPrizesWon } = userSlice.actions;
 
 export default userSlice.reducer;

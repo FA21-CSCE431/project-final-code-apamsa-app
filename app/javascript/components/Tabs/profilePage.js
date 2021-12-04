@@ -6,17 +6,17 @@ import { logout } from "../objects/user/userSlice";
 import axios from 'axios'
 
 const ProfilePage = () => {
-  const { name, email, img_url, is_admin, google_id } = {
+  const { name, email, img_url, is_admin, google_id, prizes_won } = {
     name: useSelector((state) => state.user.name),
     email: useSelector((state) => state.user.email),
     img_url: useSelector((state) => state.user.imgURL),
     is_admin: useSelector((state) => state.user.admin),
     google_id: useSelector((state) => state.user.googleID),
+    prizes_won: useSelector((state) => state.user.prizesWon),
   };
 
   var admin_status = (is_admin ? "Y" : "N");
 
-  const [cnt, setCnt] = useState(0);
   const [rsvps, setRsvps] = useState([]);
 
   useEffect(() => {
@@ -52,6 +52,9 @@ const ProfilePage = () => {
               <br/>
               Admin Staus: {admin_status}
             </Typography>
+          </CardContent>
+          <CardContent>
+            Number of Prizes Won: {prizes_won}
           </CardContent>
           <CardContent>
             My Rsvps:

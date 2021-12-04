@@ -50,7 +50,7 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:google_id, :name, :email, :img_url, :is_admin)
+        params.require(:user).permit(:google_id, :name, :email, :img_url, :is_admin, :prizes_won)
       end
 
       def options

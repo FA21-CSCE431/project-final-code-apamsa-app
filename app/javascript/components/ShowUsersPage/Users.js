@@ -38,7 +38,8 @@ const Users = () => {
       name,
       email,
       img_url,
-      is_admin
+      is_admin,
+      prizes_won,
     } = user.attributes;
 
     const user_index = user.id;
@@ -52,6 +53,7 @@ const Users = () => {
         email={email}
         img_url={img_url}
         is_admin={is_admin}
+        prizes_won={prizes_won}
       />
     );
   });

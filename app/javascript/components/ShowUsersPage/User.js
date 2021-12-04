@@ -14,6 +14,7 @@ import {
   DialogActions,
   AlertTitle,
   Alert,
+  Chip,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -27,12 +28,14 @@ const User = ({
   email,
   img_url,
   is_admin,
+  prizes_won,
   ...props
 }) => {
 
   const [admin_status, setAdminStatus] = useState(is_admin);
   const [openUpdated, setOpenUpdated] = useState(false);
   const [readySubmit, setReadySubmit] = useState(false);
+  const [cnt, setCnt] = useState(parseInt(prizes_won));
 
   const updateAdmin = () => {
     if (is_admin)
@@ -44,62 +47,96 @@ const User = ({
       setAdminStatus(true);
     }
 
-    setReadySubmit(true);
+    setReadySubmit(!readySubmit);
   }
+
+  console.log(is_admin);
 
   const handleUpdateAdmin = () => {
 
     const url = `/api/v1/users/${google_id}`;
 
     axios
-      .patch(url, {["is_admin"] : admin_status})
+      .patch(url, {["is_admin"] : admin_status, ["prizes_won"]: cnt})
+      .then((resp) => setOpenUpdated(true))
       .catch((resp) => console.log(resp));
-
-    setOpenUpdated(true);
   };
 
   return (
     <div>
-      <Paper>
+      <Paper sx={{ minWidth: 500 }}>
         <CardHeader title={name} subheader={email} />
-        {is_admin && (
-          <Fragment>
-            <CardContent>
-              <Typography>
-                Admin
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button
-                variant="contained"
-                endIcon={<RemoveIcon />}
-                onClick={updateAdmin}
-              >
-                Remove admin
-              </Button>
-            </CardActions>
-          </Fragment>
-        )}
-        {!is_admin && (
-          <Fragment>
-            <CardActions>
-              <Button
-                variant="contained"
-                endIcon={<AddIcon />}
-                onClick={updateAdmin}
-              >
-                Make {name} admin
-              </Button>
-            </CardActions>
-          </Fragment>
-        )}
-        {readySubmit && (
           <CardActions>
-            <Button variant="contained" onClick={handleUpdateAdmin}>
-              Submit Changes
-            </Button>
+            {is_admin ? (
+              <Fragment>
+                <CardContent>
+                  <Typography>
+                    Admin
+                  </Typography>
+                </CardContent>
+                <Button
+                  variant="text"
+                  startIcon={<RemoveIcon />}
+                  onClick={updateAdmin}
+                  color="error"
+                >
+                  Remove admin
+                </Button>
+              </Fragment>
+            ) : (
+              <Fragment>
+                <CardContent>
+                  <Typography>
+                    User
+                  </Typography>
+                </CardContent>
+                <Button
+                  variant="text"
+                  startIcon={<AddIcon />}
+                  onClick={updateAdmin}
+                  color="success"
+                >
+                  Make {name} admin
+                </Button>
+              </Fragment>
+            )}
           </CardActions>
-        )}
+          <CardActions>
+            <Button variant="outlined" onClick={() => {
+              if (cnt != parseInt(prizes_won))
+              {
+                setReadySubmit(true);
+              }
+              else
+              {
+                setReadySubmit(false);
+              }
+              setCnt(cnt - 1);
+            }}>
+            - Number of times won 
+            </Button>  
+            <CardContent>
+              <Chip label={cnt} variant="outlined" />
+            </CardContent>
+            <Button variant="outlined" onClick={() => {
+              if (cnt != parseInt(prizes_won))
+              {
+                setReadySubmit(true);
+              }
+              else
+              {
+                setReadySubmit(false);
+              }
+              setCnt(cnt + 1);
+            }}>
+            + Number of times won
+            </Button>   
+          </CardActions>
+        <CardActions>
+          <Button variant="contained" onClick={handleUpdateAdmin}>
+            Submit Changes
+          </Button>
+        </CardActions>
       </Paper>
       <Dialog
         open={openUpdated}
@@ -108,7 +145,7 @@ const User = ({
         }}
       >
         <DialogTitle id="alert-dialog-title">
-          <Alert>{name} privelege was successfully changed!</Alert>
+          <Alert>{name} was successfully updated!</Alert>
         </DialogTitle>
         <DialogActions>
           <IconButton
