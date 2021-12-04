@@ -47,15 +47,6 @@ const BlogPosts = () => {
     getBPs();
   }, [updates]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get('api/v1/blog_posts.json')
-  //     .then( resp => {
-  //       setPost(resp.data.data);
-  //     })
-  //     .catch( resp => console.log(resp))
-  // }, [blogPosts.length])
-
   const grid = blog_posts.map( (blogPost, index) => {
     const { canComment,
             description,

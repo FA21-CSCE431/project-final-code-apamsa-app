@@ -12,11 +12,23 @@ import HeadImage from "../../assets/images/apamsa2.png";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, setAdmin, setUserId } from "./objects/user/userSlice";
-import { Card, CardHeader, Avatar, Button } from "@mui/material";
+import { login, logout, setAdmin, setPrizesWon, setUserId } from "./objects/user/userSlice";
+import { 
+  Card, 
+  CardHeader, 
+  Avatar, 
+  Button,
+  Dialog,
+  DialogActions,
+  Alert,
+  DialogTitle,
+  IconButton 
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close"
 
 const App = () => {
   const [profile, setProfile] = useState({});
+  const [openGoogleFailure, setOpenGoogleFailure] = useState(false);
 
   const { name, email, img_url, is_admin } = {
     name: useSelector((state) => state.user.name),
@@ -31,9 +43,11 @@ const App = () => {
     dispatch(logout());
   }
 
-  const responseGoogle = (response) => {
-    console.log("Params from Google", response.profileObj);
+  const failureResponse = (response) => {
+    setOpenGoogleFailure(true);
+  }
 
+  const responseGoogle = (response) => {
     dispatch(
       login({
         name: response.profileObj.name,
@@ -54,23 +68,18 @@ const App = () => {
       })
     );
 
-    console.log("Profile created from Google", profile);
-
     axios
-      .post("/api/v1/users", profile)
-      .then((resp) => console.log(resp))
-      .catch((resp) => console.log(resp));
+      .post("/api/v1/users", profile);
 
     const url = `/api/v1/users/${response.profileObj.googleId}`
 
     axios
       .get(url)
       .then((resp) => {
-        console.log("Get admin data: ", resp.data.data.attributes.is_admin);
         dispatch(setAdmin(resp.data.data.attributes.is_admin));
-        dispatch(setUserId(resp.data.data.id))
+        dispatch(setUserId(resp.data.data.id));
+        dispatch(setPrizesWon(resp.data.data.attributes.prizes_won));
       })
-      .catch((resp) => console.log(resp));
   
   };
 
@@ -79,33 +88,29 @@ const App = () => {
       <div style={{ width: "100%", display: "flex", margin: "0 !important" }}>
         <img src={HeadImage} style={{ width: "100%", display: "flex" }} />
       </div>
-      {name == "" && (
         <Fragment>
-          <h2>
-            Welcome to the APAMSA App! Please sign in
-          </h2>
           <GoogleLogin
             clientId="134632541809-skppjomtgttr7vkb08lmoki4p15nv9d5.apps.googleusercontent.com"
             onSuccess={responseGoogle}
-            onFailure={responseGoogle}
+            onFailure={failureResponse}
             cookiePolicy={"single_host_origin"}
           />
         </Fragment>
-      )}
-      {name !== ""  && (
         <Fragment>
-          <Card>
-            <CardHeader 
-              avatar={<Avatar src={img_url} />} 
-              title={name} 
-              subtitle={email} 
-              action={
-                <Button variant="contained" onClick={signOut}>
-                  Sign Out
-                </Button>
-              }
-            />
-          </Card>
+          {name !== "" && (
+            <Card>
+              <CardHeader 
+                avatar={<Avatar src={img_url} />} 
+                title={name} 
+                subtitle={email} 
+                action={
+                  <Button variant="contained" onClick={signOut}>
+                    Sign Out
+                  </Button>
+                }
+              />
+            </Card>
+          )}
           <Router>
             <Switch>
               <Route exact path="/" component={HomePage} />
@@ -118,9 +123,11 @@ const App = () => {
               <Route path="/about">
                 <AboutPage />
               </Route>
-              <Route path="/profile">
-                <ProfilePage />
-              </Route>
+              {name !== "" && (
+                <Route path="/profile">
+                  <ProfilePage />
+                </Route>
+              )}
               <Route exact path="/help">
                 <HelpPage />
               </Route>
@@ -135,7 +142,25 @@ const App = () => {
             <Footer />
           </footer>
         </Fragment>
-      )}
+        <Dialog
+          open={openGoogleFailure}
+          onClose={() => {
+            setOpenGoogleFailure(false);
+          }}
+        >
+          <DialogTitle id="alert-dialog-title">
+            <Alert severity="error">Uh oh something went wrong with creating the event!</Alert>
+          </DialogTitle>
+          <DialogActions>
+            <IconButton
+              onClick={() => {
+                setOpenGoogleFailure(false);
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogActions>
+        </Dialog>
     </div>
   );
 };

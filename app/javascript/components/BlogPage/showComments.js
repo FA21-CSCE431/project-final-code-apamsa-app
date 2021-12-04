@@ -30,12 +30,10 @@ const Comments = (props) => {
   );
 
   const getComments = () => {
-    console.log("Slug:", props.slug);
 
     axios
       .get(`/api/v1/comments`)
       .then((resp) => {
-        console.log("Commens in axios:", resp.data.data);
         dispatch(setComments(resp.data.data));
       })
       .catch((resp) => console.log(resp));
@@ -46,8 +44,6 @@ const Comments = (props) => {
   useEffect(() => {
     getComments();
   }, [updates]);
-
-  console.log("Comments array:", comments);
 
   const commentList = comments.map((item, index) => {
     const {

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import isWeekend from "date-fns/isWeekend";
 import TextField from "@mui/material/TextField";
@@ -10,18 +10,20 @@ import {
   setDate,
   filterByDate,
   resetFilter,
+  setPastDate,
+  fileterByPast,
 } from "../objects/event/eventsSlice";
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  const [value, setValue] = React.useState(new Date());
+  const [value, setValue] = useState(new Date());
 
   const setChosenDate = (newValue) => {
     const formatDate =
       newValue.getFullYear() +
       "-" +
       (newValue.getMonth() + 1) +
-      "-" +
+      "-" + ((newValue.getDate() < 10) ? "0" : "") +
       newValue.getDate();
     dispatch(setDate(formatDate.toString()));
     dispatch(filterByDate());

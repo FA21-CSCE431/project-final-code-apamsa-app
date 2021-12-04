@@ -90,11 +90,9 @@ const CreatePost = () => {
       setSelected(false);
       setSuccessfulPost(true);
       setExpanded(false);
-      console.log("Blog Post: ", resp);
     })
     .catch(resp => {
       setBadPost(true);
-      console.log("Error: ", resp);
     })
   };
 
