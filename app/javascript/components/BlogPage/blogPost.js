@@ -65,6 +65,7 @@ const BlogPost = ({
   const [openBlog, setOpenBlog] = useState(false);
   const is_admin = useSelector((state) => state.user.admin);
   const user_id = useSelector((state) => state.user.userID);
+  const name = useSelector((state) => state.user.name);
 
   if (user_name == "") {
     axios
@@ -90,7 +91,6 @@ const BlogPost = ({
   const handleConfirmDelete = () => {
     axios
       .delete(`/api/v1/blog_posts/${slug}`)
-      .then((resp) => console.log(resp))
       .catch((resp) => console.log(resp));
 
     setOpenDeleted(true);
@@ -131,11 +131,9 @@ const BlogPost = ({
         setSelected(false);
         setSuccessfulPost(true);
         setExpanded(false);
-        console.log("Blog Post: ", resp);
       })
       .catch((resp) => {
         setBadPost(true);
-        console.log("Error: ", resp);
       });
   };
 
@@ -165,139 +163,6 @@ const BlogPost = ({
           <Typography variant="subtitle1">Summary: {synopsis}</Typography>
         </CardContent>
       </Paper>
-      {/* <Paper sx={{
-        minWidth: 500
-      }}
-      >
-        <CardHeader 
-          title={title}
-          avatar={<Avatar src={avatar_url} />}
-          subheader={user_name}
-          action={
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              {is_admin && (
-                <Button variant='contained' endIcon={<CreateIcon />}>
-                  Edit Post
-                </Button>
-              )}
-            </ExpandMore>
-          }
-        />
-        <CardContent>
-          <Typography variant="subtitle1">
-            {synopsis}
-          </Typography>
-          <Typography paragraph>
-            {description}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          {link != null && (
-            <IconButton aria-label="Link to" href={link}>
-              <LinkIcon />
-            </IconButton>
-          )}
-          {is_admin == true && (
-            <Fragment>
-              <IconButton onClick={handleDeleteClick}>
-                <DeleteIcon /> 
-              </IconButton>
-            </Fragment>
-          )}
-        </CardActions>
-        {/* Expand To Edit Post */}
-      {/* <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardActions>
-            <TextField
-              id="outlined-textarea"
-              label="Title"
-              placeholder="Title"
-              onChange={handleChange}
-              value={blog_post.title}
-              name="title"
-              multiline
-            />
-            <TextField
-              id="outlined-textarea"
-              label="Link"
-              placeholder="Link"
-              onChange={handleChange}
-              value={blog_post.link}
-              name="link"
-
-              multiline
-            />
-          </CardActions>
-          <CardActions>
-            <TextField
-                id="outlined-textarea"
-                label="Summary"
-                placeholder="Summary"
-                onChange={handleChange}
-                value={blog_post.synopsis}
-                name="synopsis"
-
-                multiline
-              />
-          </CardActions>
-          <CardActions>
-            <TextField
-                id="outlined-multiline-static"
-                label="Description"
-                multiline
-                onChange={handleChange}
-                value={blog_post.description}
-                name="description"
-
-                rows={4}
-              />
-          </CardActions>
-          <CardActions>
-            <Typography paragraph>
-              Disable comments?  
-            </Typography>
-            <ToggleButton
-              onChange={handleDisableComments}
-              name="canComment"
-              selected={selected}
-              value={0}
-            >
-              {commentsDisabled}
-            </ToggleButton>
-          </CardActions>
-          <CardHeader action={
-              <Button variant="contained" onClick={handleSubmitPost}>
-                Post
-              </Button>
-            }
-          />
-        </Collapse>
-        {canComment ? (
-          <Fragment>
-            <Stack spacing={5} direction="column">
-              <CreateComment
-                blog_post_id={blog_post_id}
-              />
-              <Comments
-                slug={slug} 
-              />
-            </Stack>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <CardContent>
-              <Typography paragraph color='text.secondary'>
-                Comments disabled for this post
-              </Typography>
-            </CardContent>
-          </Fragment>
-        )}
-      </Paper> */}
       {/* Successful Post */}
       <Dialog
         open={successful_post}
@@ -505,8 +370,19 @@ const BlogPost = ({
             {canComment ? (
               <Fragment>
                 <Stack spacing={5} direction="column">
-                  <CreateComment blog_post_id={blog_post_id} />
-                  <Comments slug={slug} id={blog_post_id} />
+                  {name !== "" ? (
+                    <Fragment>
+                      <CreateComment blog_post_id={blog_post_id} />
+                      <Comments slug={slug} id={blog_post_id} />
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <Typography variant="subtitle2">
+                        Sign in to comment
+                      </Typography>
+                      <Comments slug={slug} id={blog_post_id} />
+                    </Fragment>
+                  )}
                 </Stack>
               </Fragment>
             ) : (

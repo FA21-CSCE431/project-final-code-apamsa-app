@@ -53,7 +53,6 @@ const User = ({
 
     axios
       .patch(url, {["is_admin"] : admin_status})
-      .then((resp) => console.log(resp))
       .catch((resp) => console.log(resp));
 
     setOpenUpdated(true);

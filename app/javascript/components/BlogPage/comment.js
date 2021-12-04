@@ -7,8 +7,6 @@ const Comment = (props) => {
   const [name, setName] = useState("");
   const [avatar_url, setAvatarURL] = useState("");
 
-  console.log("Comment Attributes", props);
-
   axios
     .get(`api/v1/users/${props.google_id}`)
     .then(resp => {

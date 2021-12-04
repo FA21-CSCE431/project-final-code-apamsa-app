@@ -7,7 +7,7 @@ export const eventsSlice = createSlice({
     allEvents: [],
     filterDate: "",
     updateCount: 0,
-    newEventDate: new Date(),
+    newEventDate: "",
   },
   reducers: {
     setEvents: (state, action) => {

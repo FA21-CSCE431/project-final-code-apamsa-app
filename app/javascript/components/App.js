@@ -32,7 +32,6 @@ const App = () => {
   }
 
   const responseGoogle = (response) => {
-    console.log("Params from Google", response.profileObj);
 
     dispatch(
       login({
@@ -54,19 +53,14 @@ const App = () => {
       })
     );
 
-    console.log("Profile created from Google", profile);
-
     axios
-      .post("/api/v1/users", profile)
-      .then((resp) => console.log(resp))
-      .catch((resp) => console.log(resp));
+      .post("/api/v1/users", profile);
 
     const url = `/api/v1/users/${response.profileObj.googleId}`
 
     axios
       .get(url)
       .then((resp) => {
-        console.log("Get admin data: ", resp.data.data.attributes.is_admin);
         dispatch(setAdmin(resp.data.data.attributes.is_admin));
         dispatch(setUserId(resp.data.data.id))
       })
@@ -79,11 +73,7 @@ const App = () => {
       <div style={{ width: "100%", display: "flex", margin: "0 !important" }}>
         <img src={HeadImage} style={{ width: "100%", display: "flex" }} />
       </div>
-      {name == "" && (
         <Fragment>
-          <h2>
-            Welcome to the APAMSA App! Please sign in
-          </h2>
           <GoogleLogin
             clientId="134632541809-skppjomtgttr7vkb08lmoki4p15nv9d5.apps.googleusercontent.com"
             onSuccess={responseGoogle}
@@ -91,21 +81,21 @@ const App = () => {
             cookiePolicy={"single_host_origin"}
           />
         </Fragment>
-      )}
-      {name !== ""  && (
         <Fragment>
-          <Card>
-            <CardHeader 
-              avatar={<Avatar src={img_url} />} 
-              title={name} 
-              subtitle={email} 
-              action={
-                <Button variant="contained" onClick={signOut}>
-                  Sign Out
-                </Button>
-              }
-            />
-          </Card>
+          {name !== "" && (
+            <Card>
+              <CardHeader 
+                avatar={<Avatar src={img_url} />} 
+                title={name} 
+                subtitle={email} 
+                action={
+                  <Button variant="contained" onClick={signOut}>
+                    Sign Out
+                  </Button>
+                }
+              />
+            </Card>
+          )}
           <Router>
             <Switch>
               <Route exact path="/" component={HomePage} />
@@ -118,9 +108,11 @@ const App = () => {
               <Route path="/about">
                 <AboutPage />
               </Route>
-              <Route path="/profile">
-                <ProfilePage />
-              </Route>
+              {name !== "" && (
+                <Route path="/profile">
+                  <ProfilePage />
+                </Route>
+              )}
               <Route exact path="/help">
                 <HelpPage />
               </Route>
@@ -135,7 +127,6 @@ const App = () => {
             <Footer />
           </footer>
         </Fragment>
-      )}
     </div>
   );
 };

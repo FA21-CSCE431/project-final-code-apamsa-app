@@ -39,19 +39,20 @@ const Event = ({
   img_url,
   ...props
 }) => {
-  const { name, email, user_id } = {
+  const { name, email, user_id, is_admin } = {
     name: useSelector((state) => state.user.name),
     email: useSelector((state) => state.user.email),
     user_id: useSelector((state) => state.user.userID),
+    is_admin: useSelector((state) => state.user.admin),
   };
 
   const [openConfirmDelete, setOpenConfirmnDelete] = useState(false);
   const [openDeleted, setOpenDeleted] = useState(false);
   const [openRsvp, setOpenRsvp] = useState(false);
-  const is_admin = useSelector((state) => state.user.admin);
   const [rsvp, setRsvp] = useState({});
   const [rsvpArray, setRsvpArray] = useState([]);
   const [showRsvps, setShowRsvps] = useState(false);
+  const [openRsvpError, setOpenRsvpError] = useState(false);
 
   useEffect(() => {
     axios
@@ -89,10 +90,11 @@ const Event = ({
     axios
       .post("/api/v1/rsvps", {rsvp})
       .then((resp) => {
-        console.log(resp);
         setOpenRsvp(true);
       })
-      .catch((resp) => console.log(resp));
+      .catch((resp) => {
+        setOpenRsvpError(true);
+      });
   };
 
   const handleDeleteClick = () => {
@@ -100,13 +102,11 @@ const Event = ({
   };
 
   const handleConfirmDelete = () => {
-    console.log("Slug for event", slug);
     const url = `/api/v1/events/${slug}`;
 
     axios
       .delete(url)
       .then((resp) => {
-        console.log(resp);
         setOpenDeleted(true);
         setOpenConfirmnDelete(false);
       })
@@ -134,13 +134,19 @@ const Event = ({
             <Typography paragraph>{description}</Typography>
           </CardContent>
           <CardActions>
-            <Button
-              variant="contained"
-              endIcon={<BeenhereIcon />}
-              onClick={handleRsvpClick}
-            >
-              RSVP Here
-            </Button>
+            {name !== "" ? (
+               <Button
+                variant="contained"
+                endIcon={<BeenhereIcon />}
+                onClick={handleRsvpClick}
+              >
+                RSVP Here
+              </Button>
+            ) : (
+              <Typography variant="subtitle2">
+                Sign in to rsvp
+              </Typography>
+            )} 
             {is_admin && (
               <Fragment>
                 <Button
@@ -174,7 +180,28 @@ const Event = ({
             </CardContent>
           )}
         </Paper>
-
+      {/* Rsvp Error */}
+      <Dialog
+        open={openRsvpError}
+        onClose={() => {
+          setOpenRsvpError(false);
+        }}
+      >
+        <DialogTitle>
+          <Alert severity="info">
+            <AlertTitle>You have already Rsvp'd to this event</AlertTitle>
+          </Alert>
+        </DialogTitle>
+        <DialogActions>
+          <IconButton
+            onClick={() => {
+              setOpenRsvpError(false);
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogActions>
+      </Dialog>
       {/* Delete? */}
       <Dialog
         open={openConfirmDelete}

@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Event from "./Event";
 import axios from "axios";
 import styled from "styled-components";
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import CreateEvent from "./createEvent";
-import { setEvents, incrementCount } from "../objects/event/eventsSlice";
+import { 
+  setEvents, 
+  incrementCount,
+} from "../objects/event/eventsSlice";
 
 const Grid = styled.div`
   display: grid;
@@ -24,6 +27,8 @@ const Grid = styled.div`
 
 const Events = () => {
   const  is_admin = useSelector((state) => state.user.admin);
+  const [show_past, setShowPast] = useState(false);
+
   const dispatch = useDispatch();
 
   const events = useSelector((state) => state.events.currentEvents);
@@ -85,6 +90,7 @@ const Events = () => {
             <CreateEvent />
           )}
           {grid}
+          {/* <Button variant="text" onClick={handleShowPastEvents}> Show Past Events </Button> */}
         </Grid>
       </Stack>
     </div>

@@ -35,8 +35,10 @@ const CreateComment = (props) => {
     axios
       .post('/api/v1/comments', comment)
       .then( resp => {
-        console.log(resp);
-       })
+        setComment({
+          description: ""
+        })
+      })
       .catch( resp => console.log(resp))
   };
 
@@ -52,6 +54,7 @@ const CreateComment = (props) => {
             multiline
             rows={4}
             defaultValue="Enter your reply here"
+            value={comment.description}
             name="description"
             onChange={handleChange}
           />
