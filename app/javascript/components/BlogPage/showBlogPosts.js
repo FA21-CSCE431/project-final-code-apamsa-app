@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Stack, Button, Card, CardActions } from "@mui/material";
-import Calendar from "react-calendar"
 import axios from 'axios'
 import styled from 'styled-components'
 import BlogPost from "./blogPost";
-import CreatePost from "./createPost"
+import CreatePost from "./createPost";
+import { setBPs, incrementCount } from "../objects/blogPost/bpSlice";
 
 const Grid = styled.div`
   display: grid;
@@ -24,31 +24,49 @@ const Grid = styled.div`
 
 const BlogPosts = () => {
 
-  /* Calendar */
-  const [dateValue, setDateValue] = useState(new Date());
-
-  function onChange(nextValue) {
-    setDateValue(nextValue);
-  }
-
   /* Posts */
-  const [blogPosts, setPost] = useState([]);
+  // const [blogPosts, setPost] = useState([]);
   const is_admin = useSelector((state) => state.user.admin);
 
-  useEffect(() => {
-    axios
-      .get('api/v1/blog_posts.json')
-      .then( resp => setPost(resp.data.data))
-      .catch( resp => console.log(resp))
-  }, [blogPosts.length])
+  const dispatch = useDispatch();
 
-  const grid = blogPosts.map( (blogPost, index) => {
+  const blog_posts = useSelector((state) => state.blog_posts.currentBps);
+
+  const getBPs = () => {
+    axios
+      .get("api/v1/blog_posts.json")
+      .then((resp) => {
+        dispatch(setBPs(resp.data.data));
+      })
+      .catch((resp) => console.log(resp));
+  };
+
+  const updates = useSelector((state) => state.blog_posts.updateCount);
+
+  useEffect(() => {
+    getBPs();
+  }, [updates]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get('api/v1/blog_posts.json')
+  //     .then( resp => {
+  //       setPost(resp.data.data);
+  //     })
+  //     .catch( resp => console.log(resp))
+  // }, [blogPosts.length])
+
+  const grid = blog_posts.map( (blogPost, index) => {
     const { canComment,
             description,
             link,
             title,
-            slug } = blogPost.attributes
-    
+            slug,
+            google_id, 
+            synopsis } = blogPost.attributes
+            
+    const blog_post_id = blogPost.id;
+        
     return (
       <BlogPost
         key={index}
@@ -57,25 +75,15 @@ const BlogPosts = () => {
         link={link} 
         canComment={canComment}
         slug={slug}
+        google_id={google_id}
+        synopsis={synopsis}
+        blog_post_id={blog_post_id}
       />
     )
   })
 
   return (
-    <div style={{ margin: "5px 15px 10px" }}>
-      <Stack 
-        spacing={10} 
-        direction="row" 
-        justifyContent="space-evenly"
-        alignItems="stretch"
-      >
-        
-        {/* Calendar */}
-        <div style={{ width: "33%" }}>
-          <Calendar onChange={onChange} value={dateValue} />
-        </div>
-
-
+    <div>
         {/* Blog Posts */}
         <Grid>
           {is_admin && (
@@ -83,8 +91,6 @@ const BlogPosts = () => {
           )}
           {grid}
         </Grid>
-
-      </Stack>
     </div>
   )
 }

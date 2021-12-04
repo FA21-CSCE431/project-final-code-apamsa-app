@@ -34,7 +34,7 @@ const Users = () => {
   // Events layout
   const grid = users.map((user, index) => {
     const {
-      user_id,
+      google_id,
       name,
       email,
       img_url,
@@ -47,7 +47,7 @@ const Users = () => {
       <User
         key={index}
         user_index={user_index}
-        user_id={user_id}
+        google_id={google_id}
         name={name}
         email={email}
         img_url={img_url}

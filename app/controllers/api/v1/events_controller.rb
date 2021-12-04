@@ -52,7 +52,8 @@ module Api
       private
 
       def event_params
-        params.require(:event).permit(:event_name, :event_date, :description, :event_start_time, :event_end_time, :img_url)
+        params.require(:event).permit(:event_name, :event_date, :description, :event_start_time, :event_end_time,
+                                      :img_url)
       end
 
       def options

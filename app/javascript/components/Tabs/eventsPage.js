@@ -10,7 +10,7 @@ const EventsPage = () => {
       <header>
         <TabBar tabValue={2} />
       </header>
-      <Stack spacing={20} direction="row" justifyContent="space-evenly">
+      <Stack spacing={10} direction="row" justifyContent="space-between">
         <Calendar />
         <Events/>
       </Stack>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DataGrid } from '@mui/x-data-grid'
 import { Stack } from "@mui/material";
-import Calendar from 'react-calendar'
 
 const UpcomingEvents = () => {
 
@@ -13,12 +12,6 @@ const UpcomingEvents = () => {
     .then( resp => setEvents(resp.data.data))
     .catch( resp => console.log(resp))
   }, [events.length])
-
-  const [value, setValue] = useState(new Date());
-
-  function onChange(nextValue) {
-    setValue(nextValue);
-  }
 
   const columns = [
     {
@@ -43,22 +36,12 @@ const UpcomingEvents = () => {
 
 
   return (
-    <div style={{ margin: "5px 15px 10px" }}>
-      <Stack 
-        spacing={10} 
-        direction="row" 
-        justifyContent="space-evenly"
-        alignItems="stretch"
-      >
-        <div style={{ width: "33%" }}>
-          <Calendar onChange={onChange} value={value} />
-        </div>
+    <div>
         <DataGrid
           rows={rows}
           columns={columns}
           disableColumnReorder
         />
-      </Stack>
     </div>
   )
 }

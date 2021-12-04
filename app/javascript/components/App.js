@@ -12,7 +12,7 @@ import HeadImage from "../../assets/images/apamsa2.png";
 import GoogleLogin from "react-google-login";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout, setAdmin } from "./objects/user/userSlice";
+import { login, logout, setAdmin, setUserId } from "./objects/user/userSlice";
 import { Card, CardHeader, Avatar, Button } from "@mui/material";
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
     name: useSelector((state) => state.user.name),
     email: useSelector((state) => state.user.email),
     img_url: useSelector((state) => state.user.imgURL),
-    user_id: useSelector((state) => state.user.userID),
+    google_id: useSelector((state) => state.user.googleID),
     is_admin: useSelector((state) => state.user.admin),
   };
   const dispatch = useDispatch();
@@ -32,12 +32,12 @@ const App = () => {
   }
 
   const responseGoogle = (response) => {
-    console.log(response.profileObj);
+    console.log("Params from Google", response.profileObj);
 
     dispatch(
       login({
         name: response.profileObj.name,
-        userID: response.profileObj.googleId,
+        googleID: response.profileObj.googleId,
         email: response.profileObj.email,
         imgURL: response.profileObj.imageUrl,
         admin: (response.profileObj.email === "charmi@tamu.edu" ? true : false),
@@ -46,7 +46,7 @@ const App = () => {
 
     setProfile(
       Object.assign(profile, profile, {
-        ["user_id"]: response.profileObj.googleId,
+        ["google_id"]: response.profileObj.googleId,
         ["name"]: response.profileObj.name,
         ["img_url"]: response.profileObj.imageUrl,
         ["email"]: response.profileObj.email,
@@ -54,7 +54,7 @@ const App = () => {
       })
     );
 
-    console.log(profile);
+    console.log("Profile created from Google", profile);
 
     axios
       .post("/api/v1/users", profile)
@@ -68,12 +68,11 @@ const App = () => {
       .then((resp) => {
         console.log("Get admin data: ", resp.data.data.attributes.is_admin);
         dispatch(setAdmin(resp.data.data.attributes.is_admin));
+        dispatch(setUserId(resp.data.data.id))
       })
       .catch((resp) => console.log(resp));
   
   };
-
-  console.log("App:", is_admin);
 
   return (
     <div>

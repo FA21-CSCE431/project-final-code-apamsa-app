@@ -68,7 +68,7 @@ const CreateEvent = () => {
   const handleChange = (e) => {
     setEvent(Object.assign({}, event, { [e.target.name]: e.target.value }));
 
-    console.log(event);
+    console.log("Event created by us:", event);
   };
 
   const handleCalendarChange = (newValue) => {
@@ -80,7 +80,7 @@ const CreateEvent = () => {
   };
 
   return (
-    <Paper>
+    <Paper sx={{minWidth: 500}}>
       <CardHeader
         title={<Typography variant="h4">New Event</Typography>}
         action={

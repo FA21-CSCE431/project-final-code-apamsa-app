@@ -1,22 +1,39 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useState, useEffect} from "react";
 import TabBar from "./tabBar";
 import { Button, Card, CardHeader, CardMedia, Avatar, CardActions, CardContent, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../objects/user/userSlice";
+import axios from 'axios'
 
 const ProfilePage = () => {
-  const { name, email, img_url, is_admin } = {
+  const { name, email, img_url, is_admin, google_id } = {
     name: useSelector((state) => state.user.name),
     email: useSelector((state) => state.user.email),
     img_url: useSelector((state) => state.user.imgURL),
-    is_admin: useSelector((state) => state.user.admin)
+    is_admin: useSelector((state) => state.user.admin),
+    google_id: useSelector((state) => state.user.googleID),
   };
-
-  console.log("Profile Page:", is_admin);
 
   var admin_status = (is_admin ? "Y" : "N");
 
   const [cnt, setCnt] = useState(0);
+  const [rsvps, setRsvps] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`api/v1/users/${google_id}`)
+      .then(resp => {
+        setRsvps(resp.data.included);
+      })
+      .catch(resp => console.log(resp))
+  }, [rsvps.length])
+
+  const list = rsvps.map((item, index) => {
+    const { event_name, event_date } = item.attributes;
+    return (
+      <li key={index}>{event_name} @ {event_date}</li>
+    )
+  })
 
   return (
     <div>
@@ -35,6 +52,12 @@ const ProfilePage = () => {
               <br/>
               Admin Staus: {admin_status}
             </Typography>
+          </CardContent>
+          <CardContent>
+            My Rsvps:
+            <ul>
+              {list}
+            </ul>
           </CardContent>
         </Card>
       )}
