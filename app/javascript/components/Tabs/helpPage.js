@@ -1,6 +1,9 @@
-import { Button, CardContent, CardHeader, Paper, Typography } from "@mui/material";
+import { Button, CardActions, CardContent, CardHeader, IconButton, Paper, Typography } from "@mui/material";
 import React, { Fragment } from "react";
+import HomePage from "./homePage";
 import TabBar from "./tabBar";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Link } from "react-router-dom";
 
 const HelpPage = () => {
   const title1 = "Welcome to the APAMSA help page";
