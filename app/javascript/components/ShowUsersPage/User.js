@@ -35,7 +35,7 @@ const User = ({
   const [admin_status, setAdminStatus] = useState(is_admin);
   const [openUpdated, setOpenUpdated] = useState(false);
   const [readySubmit, setReadySubmit] = useState(false);
-  const [cnt, setCnt] = useState(parseInt(prizes_won));
+  const [cnt, setCnt] = useState((prizes_won == null) ? 0 : parseInt(prizes_won));
 
   const updateAdmin = () => {
     if (is_admin)
