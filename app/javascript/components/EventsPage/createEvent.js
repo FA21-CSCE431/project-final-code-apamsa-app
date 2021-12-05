@@ -97,9 +97,7 @@ const CreateEvent = () => {
               aria-expanded={expanded}
               aria-label="show more"
             >
-              <IconButton>
-                <AddIcon />
-              </IconButton>
+              <AddIcon />
             </ExpandMore>
           }
         />

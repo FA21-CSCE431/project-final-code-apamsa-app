@@ -4,6 +4,7 @@ export const eventsSlice = createSlice({
   name: "events",
   initialState: {
     currentEvents: [],
+    selectedEvents: [],
     allEvents: [],
     pastEvents: [],
     filterDate: "",
@@ -14,9 +15,16 @@ export const eventsSlice = createSlice({
   reducers: {
     setEvents: (state, action) => {
       state.allEvents = action.payload;
+      state.currentEvents = state.allEvents.filter(
+        (event) => event.attributes.event_date >= state.today
+      );
+      state.selectedEvents = state.currentEvents;
     },
     incrementCount: (state) => {
       state.updateCount++;
+    },
+    decrementCount: (state) => {
+      state.updateCount--;
     },
     setDate: (state, action) => {
       state.filterDate = action.payload;
@@ -27,7 +35,7 @@ export const eventsSlice = createSlice({
       )
     },
     filterByDate: (state) => {
-      state.currentEvents = state.allEvents.filter(
+      state.selectedEvents = state.allEvents.filter(
         (event) => event.attributes.event_date == state.filterDate
       );
     },
@@ -37,7 +45,7 @@ export const eventsSlice = createSlice({
       );
     },
     resetFilter: (state) => {
-      state.currentEvents = state.allEvents;
+      state.selectedEvents = state.currentEvents;
     },
     updateNewEventDate: (state, action) => {
       state.newEventDate = action.payload;
@@ -51,6 +59,7 @@ export const eventsSlice = createSlice({
 export const {
   setEvents,
   incrementCount,
+  decrementCount,
   setDate,
   filterByDate,
   resetFilter,

@@ -19,6 +19,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CloseIcon from "@mui/icons-material/Close"
+import AddIcon from "@mui/icons-material/Add"
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,6 +28,7 @@ const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(45deg)",
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest,
@@ -111,16 +113,15 @@ const CreatePost = () => {
     <Fragment>
       <Card sx={{minWidth: 500}}>
         <CardHeader
+          title={<Typography variant="h4">New Blog Post</Typography>}
           action={
             <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
             >
-              <Button variant="contained">
-                New Post <CreateIcon />
-              </Button>
+              {expanded ? <AddIcon /> : <CreateIcon />}
             </ExpandMore>
           }
         />

@@ -27,6 +27,7 @@ import BeenhereIcon from "@mui/icons-material/Beenhere";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
+import { decrementCount } from "../objects/events/eventsSlice";
 
 const Event = ({
   event_id,
@@ -53,6 +54,7 @@ const Event = ({
   const [rsvpArray, setRsvpArray] = useState([]);
   const [showRsvps, setShowRsvps] = useState(false);
   const [openRsvpError, setOpenRsvpError] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -109,6 +111,7 @@ const Event = ({
       .then((resp) => {
         setOpenDeleted(true);
         setOpenConfirmnDelete(false);
+        dispatch(decrementCount());
       })
       .catch((resp) => console.log(resp));
   };
