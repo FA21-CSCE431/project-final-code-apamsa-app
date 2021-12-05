@@ -44,7 +44,6 @@ const CreateEvent = () => {
   const [event, setEvent] = useState({});
   const [successful_post, setSuccessfulPost] = useState(false);
   const [bad_post, setBadPost] = useState(false);
-
   const [value, setValue] = useState(new Date());
 
   const handleExpandClick = () => {
@@ -124,7 +123,7 @@ const CreateEvent = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-          </CardActions>
+          </CardActions>    
 
           <CardActions>
             <TextField
@@ -179,7 +178,7 @@ const CreateEvent = () => {
       }}
     >
       <DialogTitle id="alert-dialog-title">
-        <Alert>Event was successfully edited!</Alert>
+        <Alert>Event was successfully created!</Alert>
       </DialogTitle>
       <DialogActions>
         <IconButton

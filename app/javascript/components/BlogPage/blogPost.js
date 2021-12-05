@@ -26,7 +26,7 @@ import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import CreateIcon from "@mui/icons-material/Create";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import AddIcon from "@mui/icons-material/Add"
 import axios from "axios";
 import CreateComment from "./createComment";
 import Comments from "./showComments";
@@ -36,6 +36,7 @@ const ExpandMore = style((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(45deg)",
   marginLeft: "auto",
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
@@ -243,6 +244,7 @@ const BlogPost = ({
           </IconButton>
         </DialogActions>
       </Dialog>
+      {/* Showing Post in dialog box */}
       <Dialog
         scroll="paper"
         fullWidth={true}
@@ -273,17 +275,17 @@ const BlogPost = ({
               subheader={user_name}
               action={
                 <ExpandMore
-                  expand={expanded}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  {is_admin && (
-                    <Button variant="contained" endIcon={<CreateIcon />}>
-                      Edit Post
-                    </Button>
-                  )}
-                </ExpandMore>
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                {is_admin && (
+                  <Fragment>
+                    {expanded ? <AddIcon /> : <CreateIcon />}
+                  </Fragment>
+                )}
+              </ExpandMore>
               }
             />
             <CardContent>

@@ -37,6 +37,21 @@ const Events = () => {
   const currEvents = useSelector((state) => state.events.selectedEvents);
   const pastEvents = useSelector((state) => state.events.pastEvents);
 
+  const getEvents = () => {
+    axios
+      .get("api/v1/events.json")
+      .then((resp) => {
+        dispatch(setEvents(resp.data.data));
+      })
+      .catch((resp) => console.log(resp));
+  };
+
+  const updates = useSelector((state) => state.events.updateCount);
+
+  useEffect(() => {
+    getEvents();
+  }, [updates]);
+
   const currLen = useSelector((state) => state.events.currentEvents.length);
   const selectedLen = useSelector((state) => state.events.selectedEvents.length);
 
