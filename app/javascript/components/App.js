@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import HomePage from "./Tabs/homePage";
 import BlogPage from "./Tabs/blogPage";
 import EventsPage from "./Tabs/eventsPage";
@@ -86,15 +86,14 @@ const App = () => {
         <img src={HeadImage} style={{ width: "100%", display: "flex" }} />
       </div>
         <Fragment>
-          <GoogleLogin
-            clientId="134632541809-skppjomtgttr7vkb08lmoki4p15nv9d5.apps.googleusercontent.com"
-            onSuccess={responseGoogle}
-            onFailure={failureResponse}
-            cookiePolicy={"single_host_origin"}
-          />
-        </Fragment>
-        <Fragment>
-          {name !== "" && (
+          {name === "" ? (
+            <GoogleLogin
+              clientId="134632541809-skppjomtgttr7vkb08lmoki4p15nv9d5.apps.googleusercontent.com"
+              onSuccess={responseGoogle}
+              onFailure={failureResponse}
+              cookiePolicy={"single_host_origin"}
+            />
+          ) : (
             <Card>
               <CardHeader 
                 avatar={<Avatar src={img_url} />} 
@@ -108,6 +107,8 @@ const App = () => {
               />
             </Card>
           )}
+        </Fragment>
+        <Fragment>
           <Router>
             <Switch>
               <Route exact path="/" component={HomePage} />
