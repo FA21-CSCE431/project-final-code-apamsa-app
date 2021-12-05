@@ -20,6 +20,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import CloseIcon from '@mui/icons-material/Close'
 import axios from "axios";
+import { setPrizesWon } from "../objects/user/userSlice";
 
 const User = ({
   user_index,
@@ -32,6 +33,7 @@ const User = ({
   ...props
 }) => {
 
+  const dispatch = useDispatch();
   const [admin_status, setAdminStatus] = useState(is_admin);
   const [openUpdated, setOpenUpdated] = useState(false);
   const [readySubmit, setReadySubmit] = useState(false);
@@ -53,11 +55,10 @@ const User = ({
   console.log(is_admin);
 
   const handleUpdateAdmin = () => {
-
-    const url = `/api/v1/users/${google_id}`;
+    dispatch(setPrizesWon(cnt));
 
     axios
-      .patch(url, {["is_admin"] : admin_status, ["prizes_won"]: cnt})
+      .patch(`/api/v1/users/${google_id}`, {["is_admin"] : admin_status, ["prizes_won"]: cnt})
       .then((resp) => setOpenUpdated(true))
       .catch((resp) => console.log(resp));
   };

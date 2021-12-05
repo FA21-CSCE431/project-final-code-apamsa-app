@@ -71,16 +71,13 @@ const App = () => {
     axios
       .post("/api/v1/users", profile);
 
-    const url = `/api/v1/users/${response.profileObj.googleId}`
-
     axios
-      .get(url)
+      .get(`/api/v1/users/${response.profileObj.googleId}`)
       .then((resp) => {
         dispatch(setAdmin(resp.data.data.attributes.is_admin));
         dispatch(setUserId(resp.data.data.id));
         dispatch(setPrizesWon(resp.data.data.attributes.prizes_won));
       })
-  
   };
 
   return (
@@ -149,7 +146,7 @@ const App = () => {
           }}
         >
           <DialogTitle id="alert-dialog-title">
-            <Alert severity="error">Uh oh something went wrong with creating the event!</Alert>
+            <Alert severity="error">Uh oh something went wrong with signing in!</Alert>
           </DialogTitle>
           <DialogActions>
             <IconButton

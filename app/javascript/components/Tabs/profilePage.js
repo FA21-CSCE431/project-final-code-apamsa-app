@@ -1,6 +1,6 @@
 import React, {Fragment, useState, useEffect} from "react";
 import TabBar from "./tabBar";
-import { Button, Card, CardHeader, CardMedia, Avatar, CardActions, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardHeader, CardMedia, Avatar, CardActions, CardContent, Typography, Chip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../objects/user/userSlice";
 import axios from 'axios'
@@ -16,6 +16,7 @@ const ProfilePage = () => {
   };
 
   var admin_status = (is_admin ? "Y" : "N");
+  var num_prizes = ((prizes_won == null) ? 0 : parseInt(prizes_won));
 
   const [rsvps, setRsvps] = useState([]);
 
@@ -54,7 +55,7 @@ const ProfilePage = () => {
             </Typography>
           </CardContent>
           <CardContent>
-            Number of Prizes Won: {prizes_won}
+              Number of Prizes Won: <Chip label={num_prizes} variant="outlined" />
           </CardContent>
           <CardContent>
             My Rsvps:
@@ -71,19 +72,6 @@ const ProfilePage = () => {
           />
         </Card>
       )}
-
-      {/* {is_admin && (
-        <Card>
-          <CardActions>
-            <Button variant="contained" onClick={() => setCnt(cnt + 1)}>
-              + Number of times won
-            </Button>      
-            <Button variant="contained" onClick={() => setCnt(cnt - 1)}>
-              - Number of times won
-            </Button>   
-          </CardActions>
-        </Card>   
-      )} */}
     </div>
   );
 };
