@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Event from "./Event";
 import axios from "axios";
@@ -8,7 +8,9 @@ import CreateEvent from "./createEvent";
 import { 
   setEvents, 
   incrementCount,
-} from "../objects/event/eventsSlice";
+  filterByPast,
+  filterByCurrent
+} from "../objects/events/eventsSlice";
 
 const Grid = styled.div`
   display: grid;
@@ -28,10 +30,13 @@ const Grid = styled.div`
 const Events = () => {
   const  is_admin = useSelector((state) => state.user.admin);
   const [show_past, setShowPast] = useState(false);
+  const [show_curr, setShowCurr] = useState(false);
 
   const dispatch = useDispatch();
 
-  const events = useSelector((state) => state.events.currentEvents);
+  const events = useSelector((state) => state.events.allEvents);
+  const currEvents = useSelector((state) => state.events.currentEvents);
+  const pastEvents = useSelector((state) => state.events.pastEvents);
 
   const getEvents = () => {
     axios
@@ -48,8 +53,46 @@ const Events = () => {
     getEvents();
   }, [updates]);
 
+  const handleShowCurrEvents = () => {
+    dispatch(filterByCurrent());
+    setShowCurr(!show_curr);
+  }
+
+  const handleShowPastEvents = () => {
+    dispatch(filterByPast());
+    setShowPast(!show_past);
+  }
+
   // Events layout
-  const grid = events.map((event, index) => {
+  const grid = currEvents.map((event, index) => {
+    const {
+      event_name,
+      event_date,
+      description,
+      event_start_time,
+      event_end_time,
+      slug,
+      img_url,
+    } = event.attributes;
+
+    const event_id = event.id;
+
+    return (
+      <Event
+        key={index}
+        event_id={event_id}
+        event_name={event_name}
+        event_date={event_date}
+        description={description}
+        event_start_time={event_start_time}
+        event_end_time={event_end_time}
+        slug={slug}
+        img_url={img_url}
+      />
+    );
+  });
+
+  const pastGrid = pastEvents.map((event, index) => {
     const {
       event_name,
       event_date,
@@ -89,8 +132,18 @@ const Events = () => {
           {is_admin && (
             <CreateEvent />
           )}
-          {grid}
-          {/* <Button variant="text" onClick={handleShowPastEvents}> Show Past Events </Button> */}
+          <Button variant="text" onClick={handleShowCurrEvents}> Show Upcoming Events </Button>
+          {show_curr && (
+            <Fragment>
+              {grid}
+            </Fragment>
+          )}
+          <Button variant="text" onClick={handleShowPastEvents}> Show Past Events </Button>
+          {show_past && (
+            <Fragment>
+              {pastGrid}
+            </Fragment>
+          )}
         </Grid>
       </Stack>
     </div>

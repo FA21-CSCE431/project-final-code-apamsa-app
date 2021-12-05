@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import isWeekend from "date-fns/isWeekend";
 import TextField from "@mui/material/TextField";
@@ -12,37 +12,46 @@ import {
   resetFilter,
   setPastDate,
   fileterByPast,
-} from "../objects/event/eventsSlice";
+  updateToday
+} from "../objects/events/eventsSlice";
 
 const Calendar = () => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState(new Date());
+  const today = new Date();
+  const [value, setValue] = useState(today);
+
+  const todayDateFormat =
+    today.getFullYear() +
+    "-" +
+    (today.getMonth() + 1) +
+    "-" + ((today.getDate() < 10) ? "0" : "") + today.getDate();
+  dispatch(updateToday(todayDateFormat.toString()));
 
   const setChosenDate = (newValue) => {
     const formatDate =
       newValue.getFullYear() +
       "-" +
       (newValue.getMonth() + 1) +
-      "-" + ((newValue.getDate() < 10) ? "0" : "") +
-      newValue.getDate();
+      "-" + ((newValue.getDate() < 10) ? "0" : "") + newValue.getDate();
     dispatch(setDate(formatDate.toString()));
     dispatch(filterByDate());
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <StaticDatePicker
-        orientation="portrait"
-        openTo="day"
-        value={value}
-        shouldDisableDate={isWeekend}
-        onChange={(newValue) => {
-          setValue(newValue);
-          setChosenDate(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
-      />
-    </LocalizationProvider>
+    <Fragment>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <StaticDatePicker
+          orientation="portrait"
+          openTo="day"
+          value={value}
+          onChange={(newValue) => {
+            setChosenDate(newValue);
+            setValue(newValue);
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+      </LocalizationProvider>
+    </Fragment>
   );
 };
 

@@ -24,7 +24,7 @@ import AddIcon from "@mui/icons-material/Add";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { setEvents, incrementCount } from "../objects/event/eventsSlice";
+import { setEvents, incrementCount } from "../objects/events/eventsSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const ExpandMore = styled((props) => {
@@ -81,7 +81,7 @@ const CreateEvent = () => {
     setValue(newValue);
 
     setEvent(
-      Object.assign(event, event, { ["event_date"]: value.toISOString() })
+      Object.assign(event, event, { ["event_date"]: newValue.toISOString() })
     );
   };
 
