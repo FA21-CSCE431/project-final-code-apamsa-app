@@ -9,7 +9,8 @@ import {
   TableHead,
   TableContainer,
   Paper,
-  TableBody
+  TableBody,
+  Typography
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setEvents } from "../objects/events/eventsSlice";
@@ -48,21 +49,24 @@ const UpcomingEvents = () => {
   })
 
   return (
-    <div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader={true}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Event Name</TableCell>
-                <TableCell>Event Date</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {eventList}
-            </TableBody>
-          </Table>
-        </TableContainer>
-    </div>
+    <Stack direction="column"spacing={2}>
+      <Typography variant="h5" fontStyle="italic">
+        Upcoming Events
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader={true}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Event Name</TableCell>
+              <TableCell>Event Date</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {eventList}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Stack>
   )
 }
 
