@@ -1,48 +1,72 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DataGrid } from '@mui/x-data-grid'
-import { Stack } from "@mui/material";
+import { 
+  Stack,
+  Table,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableContainer,
+  Paper,
+  TableBody,
+  Typography
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { setEvents } from "../objects/events/eventsSlice";
 
 const UpcomingEvents = () => {
+  const dispatch = useDispatch();
+  const events = useSelector((state) => state.events.selectedEvents);
 
-  const [events, setEvents] = useState([]);
+  const getEvents = () => {
+    axios
+      .get("api/v1/events.json")
+      .then((resp) => {
+        dispatch(setEvents(resp.data.data));
+      })
+      .catch((resp) => console.log(resp));
+  };
+
+  const updates = useSelector((state) => state.events.updateCount);
 
   useEffect(() => {
-    axios.get('api/v1/events.json')
-    .then( resp => setEvents(resp.data.data))
-    .catch( resp => console.log(resp))
-  }, [events.length])
+    getEvents();
+  }, [updates]);
 
-  const columns = [
-    {
-      field: 'event_name',
-      header: 'Upcoming Events',
-      width: 200
-    },
-    {
-      field: 'event_date',
-      header: ' ',
-      width: 200
-    }
-  ];
-
-  const rows = events.map( item => {
+  const eventList = events.map( (item, index) => {
     return (
-      {
-        id: item.id, event_name: item.attributes.event_name, event_date: item.attributes.event_date
-      }
+      <TableRow
+        key={index}
+        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      >
+        <TableCell component="th" scope="row">
+          {item.attributes.event_name}
+        </TableCell>
+        <TableCell>{item.attributes.event_date}</TableCell>
+      </TableRow>
     )
   })
 
-
   return (
-    <div>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          disableColumnReorder
-        />
-    </div>
+    <Stack direction="column"spacing={2}>
+      <Typography variant="h5" fontStyle="italic">
+        Upcoming Events
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader={true}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Event Name</TableCell>
+              <TableCell>Event Date</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {eventList}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Stack>
   )
 }
 

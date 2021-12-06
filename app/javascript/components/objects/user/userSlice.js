@@ -19,7 +19,7 @@ export const userSlice = createSlice({
       state.imgURL = action.payload.imgURL;
       state.admin = action.payload.admin;
       state.userID = action.payload.userID;
-      state.prizesWon = action.payload.prizeWon;
+      state.prizesWon = action.payload.prizesWon;
     },
 
     logout: (state) => {
@@ -41,7 +41,7 @@ export const userSlice = createSlice({
     },
 
     setPrizesWon: (state, action) => {
-      state.prizeWon = action.payload;
+      state.prizesWon = action.payload;
     }
   },
 });

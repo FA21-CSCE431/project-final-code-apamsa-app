@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import TabBar from "./tabBar";
 import Events from "../EventsPage/Events"
-import Stack from '@mui/material/Stack';
+import { Stack, Button } from '@mui/material';
 import Calendar from "./calendar";
+import { useDispatch, useSelector } from "react-redux";
+import { resetFilter } from "../objects/events/eventsSlice";
 
 const EventsPage = () => {
+
   return (
     <div>
       <header>

@@ -24,7 +24,7 @@ import AddIcon from "@mui/icons-material/Add";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { setEvents, incrementCount } from "../objects/event/eventsSlice";
+import { setEvents, incrementCount } from "../objects/events/eventsSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const ExpandMore = styled((props) => {
@@ -44,7 +44,6 @@ const CreateEvent = () => {
   const [event, setEvent] = useState({});
   const [successful_post, setSuccessfulPost] = useState(false);
   const [bad_post, setBadPost] = useState(false);
-
   const [value, setValue] = useState(new Date());
 
   const handleExpandClick = () => {
@@ -81,7 +80,7 @@ const CreateEvent = () => {
     setValue(newValue);
 
     setEvent(
-      Object.assign(event, event, { ["event_date"]: value.toISOString() })
+      Object.assign(event, event, { ["event_date"]: newValue.toISOString() })
     );
   };
 
@@ -97,9 +96,7 @@ const CreateEvent = () => {
               aria-expanded={expanded}
               aria-label="show more"
             >
-              <IconButton>
-                <AddIcon />
-              </IconButton>
+              <AddIcon />
             </ExpandMore>
           }
         />
@@ -126,7 +123,7 @@ const CreateEvent = () => {
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
-          </CardActions>
+          </CardActions>    
 
           <CardActions>
             <TextField
@@ -181,7 +178,7 @@ const CreateEvent = () => {
       }}
     >
       <DialogTitle id="alert-dialog-title">
-        <Alert>Event was successfully edited!</Alert>
+        <Alert>Event was successfully created!</Alert>
       </DialogTitle>
       <DialogActions>
         <IconButton
