@@ -1,24 +1,49 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This app uses:
 
-Things you may want to cover:
+* Ruby 3.0.2
+* Rails 6.1.4
+* Postgresql 
+* Webpacker
+* ReactJS
+* FastJson API
+* Rspec + Capybara
+* Brakeman
 
-* Ruby version
 
-* System dependencies
+To run locally, run the following commands:
+* bundle install
+* rails db:create
+* rails db:migrate
+* rails s --binding=0.0.0.0
+  
+  Then go to http://localhost:3000/ 
+  
+  
+To run testing, run the following commands:
+* rspec spec/.
 
-* Configuration
 
-* Database creation
+To run linter, run the following command:
+* rubocop -A
 
-* Database initialization
 
-* How to run the test suite
+To run secuirty analysis, run the following commad:
+* brakeman
 
-* Services (job queues, cache servers, search engines, etc.)
+  Then open the 'output.html' in a browser
+  
 
-* Deployment instructions
+Deployment Info:
+* Hosting service: Heroku
 
-* ...
+Coninuous Deployment w/ corresponding branch:
+* Production app: main
+* Review app: frontend-dev
+
+
+Continuous Integration:
+* Rspec tests ran with every push and/or pull request
+* Find the configurations in .github/workflows/workflow.yml
+
